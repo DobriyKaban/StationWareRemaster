@@ -155,8 +155,6 @@ entities:
     fixedRotation: False
     bodyType: Dynamic
     type: Physics
-  - id: Empty
-    type: BecomesStation
   - type: OccluderTree
   - type: Shuttle
   - nextUpdate: 3089.5508143

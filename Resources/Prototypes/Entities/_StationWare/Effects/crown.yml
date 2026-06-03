@@ -1,7 +1,7 @@
 - type: entity
   id: CrownEffect
   name: crown
-  noSpawn: true
+  categories: [ HideSpawnMenu ]
   save: false
   components:
   - type: Transform

@@ -1,4 +1,4 @@
-﻿using Content.Shared.Trigger.Components;
+using Content.Shared.Trigger.Components;
 using Content.Shared.Trigger.Components.Triggers;
 using Content.Shared.Examine;
 using Content.Shared.Verbs;
@@ -10,6 +10,9 @@ public sealed partial class TriggerSystem
 {
     private void InitializeTimer()
     {
+        // StationWare edit start - subscribe to MapInitEvent to initialize active timers
+        SubscribeLocalEvent<TimerTriggerComponent, MapInitEvent>(OnTimerMapInit);
+        // StationWare edit end
         SubscribeLocalEvent<RepeatingTriggerComponent, MapInitEvent>(OnRepeatInit);
         SubscribeLocalEvent<RandomTimerTriggerComponent, MapInitEvent>(OnRandomInit);
         SubscribeLocalEvent<TimerTriggerComponent, ComponentShutdown>(OnTimerShutdown);
@@ -17,6 +20,19 @@ public sealed partial class TriggerSystem
         SubscribeLocalEvent<TimerTriggerComponent, TriggerEvent>(OnTimerTriggered);
         SubscribeLocalEvent<TimerTriggerComponent, GetVerbsEvent<AlternativeVerb>>(OnTimerGetAltVerbs);
     }
+
+    // StationWare edit start - initialize NextTrigger and NextBeep if the timer starts active
+    private void OnTimerMapInit(Entity<TimerTriggerComponent> ent, ref MapInitEvent args)
+    {
+        if (HasComp<ActiveTimerTriggerComponent>(ent))
+        {
+            ent.Comp.NextTrigger = _timing.CurTime + ent.Comp.Delay;
+            var delay = ent.Comp.InitialBeepDelay ?? ent.Comp.BeepInterval;
+            ent.Comp.NextBeep = _timing.CurTime + delay;
+            Dirty(ent);
+        }
+    }
+    // StationWare edit end
 
     // set the time of the first trigger after being spawned
     private void OnRepeatInit(Entity<RepeatingTriggerComponent> ent, ref MapInitEvent args)

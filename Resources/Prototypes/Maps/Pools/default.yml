@@ -1,7 +1,15 @@
 - type: gameMapPool
   id: DefaultMapPool
   maps:
-  - Dome
-  - Dumbbell
-  - Hydra
-  - MagmaFactory
+  - Bagel
+  - Box
+  - Elkridge
+  - Fland
+  - Marathon
+  - Oasis
+  - Packed
+  - Plasma
+  - Reach
+  - Exo
+  - Snowball
+  - Serpentcrest

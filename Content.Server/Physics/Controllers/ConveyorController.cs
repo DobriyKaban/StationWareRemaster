@@ -48,6 +48,10 @@ public sealed partial class ConveyorController : SharedConveyorController
                                        CollisionGroup.Impassable), hard: false, body: physics);
 
         }
+
+        // StationWare edit start - update appearance on init to apply initial state from prototype
+        UpdateAppearance(uid, component);
+        // StationWare edit end
     }
 
     private void OnConveyorShutdown(EntityUid uid, ConveyorComponent component, ComponentShutdown args)

@@ -4,7 +4,7 @@
   group: Toxins
   desc: reagent-desc-sulfuric-acid
   physicalDesc: reagent-physical-desc-oily
-  flavor: acidic
+  flavor: acid
   color: "#58eb3b"
   boilingPoint: 337.0
   meltingPoint: 10.31
@@ -20,7 +20,6 @@
       methods: [ Touch ]
       effects:
       - !type:HealthChange
-        scaleByQuantity: true
         ignoreResistances: false
         damage:
           types:
@@ -29,7 +28,7 @@
         emote: Scream
         probability: 0.25
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:HealthChange
         damage:

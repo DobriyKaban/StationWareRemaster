@@ -1,4 +1,4 @@
-﻿# Conveyor belt that is always on and indestructible.
+# Conveyor belt that is always on and indestructible.
 - type: entity
   id: SWConveyorBelt
   name: conveyor belt
@@ -13,7 +13,7 @@
     anchored: true
   - type: Sprite
     netsync: false
-    sprite: Structures/conveyor.rsi
+    sprite: Structures/swconveyor.rsi
     state: conveyor_started_cw
     drawdepth: FloorObjects
   - type: Physics
@@ -35,11 +35,6 @@
   - type: Conveyor
     powered: true
     state: Forward
-  - type: SignalReceiver
-    inputs:
-      Reverse: [ ]
-      Forward: [ ]
-      Off: [ ]
   - type: Appearance
   - type: GenericVisualizer
     visuals:
