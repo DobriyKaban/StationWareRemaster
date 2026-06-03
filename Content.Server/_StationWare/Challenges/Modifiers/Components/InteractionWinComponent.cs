@@ -5,7 +5,7 @@
 /// when you interact with them.
 /// </summary>
 [RegisterComponent]
-public sealed partial class InteractionWinComponent : Component
+public sealed class InteractionWinComponent : Component
 {
     /// <summary>
     /// The chance that you win when you interact.

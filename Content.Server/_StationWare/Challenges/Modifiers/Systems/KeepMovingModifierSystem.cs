@@ -3,7 +3,7 @@ using Robust.Shared.Physics.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class KeepMovingModifierSystem : EntitySystem
+public sealed class KeepMovingModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

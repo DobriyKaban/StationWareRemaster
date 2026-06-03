@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed partial class StayAliveModifierComponent : Component
+public sealed class StayAliveModifierComponent : Component
 {
 
 }

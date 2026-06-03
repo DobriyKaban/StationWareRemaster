@@ -4,7 +4,7 @@ using Content.Shared.Buckle.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class BuckledWinModifierSystem : EntitySystem
+public sealed class BuckledWinModifierSystem : EntitySystem
 {
     [Dependency] private readonly BuckleSystem _buckle = default!;
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;

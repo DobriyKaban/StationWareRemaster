@@ -4,7 +4,7 @@
 /// Players musn't move or else they lose.
 /// </summary>
 [RegisterComponent]
-public sealed partial class FreezeModifierComponent : Component
+public sealed class FreezeModifierComponent : Component
 {
 }
 
@@ -12,7 +12,7 @@ public sealed partial class FreezeModifierComponent : Component
 /// A player that is playing <see cref="FreezeModifierComponent"/>
 /// </summary>
 [RegisterComponent]
-public sealed partial class FreezePlayerComponent : Component
+public sealed class FreezePlayerComponent : Component
 {
     /// <summary>
     /// The challenge entity for the freeze modifier player

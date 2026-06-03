@@ -6,7 +6,7 @@ using Robust.Server.GameObjects;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class WinningMarkerModifierSystem : EntitySystem
+public sealed class WinningMarkerModifierSystem : EntitySystem
 {
     [Dependency] private readonly IComponentFactory _componentFactory = default!;
     [Dependency] private readonly TransformSystem _transform = default!;

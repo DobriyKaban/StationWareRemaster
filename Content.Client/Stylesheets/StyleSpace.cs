@@ -1,14 +1,14 @@
-using System.Linq;
+﻿using System.Linq;
 using Content.Client.Resources;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Maths;
 using static Robust.Client.UserInterface.StylesheetHelpers;
 
 namespace Content.Client.Stylesheets
 {
-    [Obsolete("Please use the new sheetlet system to define styles, and remove all references to this class as it may be deleted in the future")]
     public sealed class StyleSpace : StyleBase
     {
         public static readonly Color SpaceRed = Color.FromHex("#9b2236");
@@ -27,7 +27,6 @@ namespace Content.Client.Stylesheets
 
         public StyleSpace(IResourceCache resCache) : base(resCache)
         {
-            // StationWare edit start
             var wariowareinc = resCache.GetFont
             (
                 new []
@@ -36,7 +35,6 @@ namespace Content.Client.Stylesheets
                 },
                 12
             );
-            // StationWare edit end
             var notoSans10 = resCache.GetFont
             (
                 new []
@@ -62,45 +60,33 @@ namespace Content.Client.Stylesheets
             {
                 BackgroundColor = new Color(0.25f, 0.25f, 0.25f)
             };
-            progressBarBackground.SetContentMarginOverride(StyleBox.Margin.Vertical, 14.5f);
+            progressBarBackground.SetContentMarginOverride(StyleBox.Margin.Vertical, 5);
 
             var progressBarForeground = new StyleBoxFlat
             {
                 BackgroundColor = new Color(0.25f, 0.50f, 0.25f)
             };
-            progressBarForeground.SetContentMarginOverride(StyleBox.Margin.Vertical, 14.5f);
+            progressBarForeground.SetContentMarginOverride(StyleBox.Margin.Vertical, 5);
 
             var textureInvertedTriangle = resCache.GetTexture("/Textures/Interface/Nano/inverted_triangle.svg.png");
 
-            var tabContainerPanel = new StyleBoxTexture();
-            tabContainerPanel.SetPatchMargin(StyleBox.Margin.All, 2);
-
-            var tabContainerBoxActive = new StyleBoxFlat {BackgroundColor = new Color(64, 64, 64)};
-            tabContainerBoxActive.SetContentMarginOverride(StyleBox.Margin.Horizontal, 5);
-            var tabContainerBoxInactive = new StyleBoxFlat {BackgroundColor = new Color(32, 32, 32)};
-            tabContainerBoxInactive.SetContentMarginOverride(StyleBox.Margin.Horizontal, 5);
-
             Stylesheet = new Stylesheet(BaseRules.Concat(new StyleRule[]
             {
-                Element<Label>().Class(StyleClass.LabelHeading)
-                    // StationWare edit start
+                Element<Label>().Class(StyleClassLabelHeading)
                     .Prop(Label.StylePropertyFont, wariowareinc)
-                    // StationWare edit end
                     .Prop(Label.StylePropertyFontColor, SpaceRed),
 
-                Element<Label>().Class(StyleClass.LabelSubText)
-                    // StationWare edit start
+                Element<Label>().Class(StyleClassLabelSubText)
                     .Prop(Label.StylePropertyFont, wariowareinc)
-                    // StationWare edit end
                     .Prop(Label.StylePropertyFontColor, Color.DarkGray),
 
-                Element<PanelContainer>().Class(StyleClass.HighDivider)
+                Element<PanelContainer>().Class(ClassHighDivider)
                     .Prop(PanelContainer.StylePropertyPanel, new StyleBoxFlat
                     {
                         BackgroundColor = SpaceRed, ContentMarginBottomOverride = 2, ContentMarginLeftOverride = 2
                     }),
 
-                Element<PanelContainer>().Class(StyleClass.LowDivider)
+                Element<PanelContainer>().Class(ClassLowDivider)
                     .Prop(PanelContainer.StylePropertyPanel, new StyleBoxFlat
                     {
                         BackgroundColor = Color.FromHex("#444"),
@@ -113,19 +99,19 @@ namespace Content.Client.Stylesheets
                     .Prop(ContainerButton.StylePropertyStyleBox, BaseButton),
 
                 Element<ContainerButton>().Class(ContainerButton.StyleClassButton)
-                    .Class(StyleClass.ButtonOpenRight)
+                    .Class(ButtonOpenRight)
                     .Prop(ContainerButton.StylePropertyStyleBox, BaseButtonOpenRight),
 
                 Element<ContainerButton>().Class(ContainerButton.StyleClassButton)
-                    .Class(StyleClass.ButtonOpenLeft)
+                    .Class(ButtonOpenLeft)
                     .Prop(ContainerButton.StylePropertyStyleBox, BaseButtonOpenLeft),
 
                 Element<ContainerButton>().Class(ContainerButton.StyleClassButton)
-                    .Class(StyleClass.ButtonOpenBoth)
+                    .Class(ButtonOpenBoth)
                     .Prop(ContainerButton.StylePropertyStyleBox, BaseButtonOpenBoth),
 
                 Element<ContainerButton>().Class(ContainerButton.StyleClassButton)
-                    .Class(StyleClass.ButtonSquare)
+                    .Class(ButtonSquare)
                     .Prop(ContainerButton.StylePropertyStyleBox, BaseButtonSquare),
 
                 // Colors for the buttons.
@@ -146,19 +132,19 @@ namespace Content.Client.Stylesheets
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorDisabled),
 
                 // Colors for the caution buttons.
-                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(StyleClass.Negative)
+                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(ButtonCaution)
                     .Pseudo(ContainerButton.StylePseudoClassNormal)
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorCautionDefault),
 
-                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(StyleClass.Negative)
+                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(ButtonCaution)
                     .Pseudo(ContainerButton.StylePseudoClassHover)
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorCautionHovered),
 
-                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(StyleClass.Negative)
+                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(ButtonCaution)
                     .Pseudo(ContainerButton.StylePseudoClassPressed)
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorCautionPressed),
 
-                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(StyleClass.Negative)
+                Element<ContainerButton>().Class(ContainerButton.StyleClassButton).Class(ButtonCaution)
                     .Pseudo(ContainerButton.StylePseudoClassDisabled)
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorCautionDisabled),
 
@@ -166,7 +152,7 @@ namespace Content.Client.Stylesheets
                 Element<Label>().Class(ContainerButton.StyleClassButton)
                     .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
-                Element<PanelContainer>().Class(StyleClass.BackgroundPanel)
+                Element<PanelContainer>().Class(ClassAngleRect)
                     .Prop(PanelContainer.StylePropertyPanel, BaseAngleRect)
                     .Prop(Control.StylePropertyModulateSelf, Color.FromHex("#202030")),
 
@@ -201,14 +187,6 @@ namespace Content.Client.Stylesheets
                 Element<Label>().Class(OptionButton.StyleClassOptionButton)
                     .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
-                // TabContainer
-                new StyleRule(new SelectorElement(typeof(TabContainer), null, null, null),
-                    new[]
-                    {
-                        new StyleProperty(TabContainer.StylePropertyPanelStyleBox, tabContainerPanel),
-                        new StyleProperty(TabContainer.StylePropertyTabStyleBox, tabContainerBoxActive),
-                        new StyleProperty(TabContainer.StylePropertyTabStyleBoxInactive, tabContainerBoxInactive),
-                    }),
 
             }).ToList());
         }

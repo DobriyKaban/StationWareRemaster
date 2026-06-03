@@ -1,13 +1,13 @@
-using System.Linq;
+﻿using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Robust.Server.GameObjects;
-using Robust.Shared.EntitySerialization.Systems;
+using Robust.Server.Maps;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class LoadMapModifierSystem : EntitySystem
+public sealed class LoadMapModifierSystem : EntitySystem
 {
     [Dependency] private readonly IMapManager _map = default!;
     [Dependency] private readonly IRobustRandom _random = default!;

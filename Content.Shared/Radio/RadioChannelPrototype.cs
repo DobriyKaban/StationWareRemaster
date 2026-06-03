@@ -2,14 +2,14 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Radio;
 
-[Prototype]
-public sealed partial class RadioChannelPrototype : IPrototype
+[Prototype("radioChannel")]
+public sealed class RadioChannelPrototype : IPrototype
 {
     /// <summary>
     /// Human-readable name for the channel.
     /// </summary>
     [DataField("name")]
-    public LocId Name { get; private set; } = string.Empty;
+    public string Name { get; private set; } = string.Empty;
 
     [ViewVariables(VVAccess.ReadOnly)]
     public string LocalizedName => Loc.GetString(Name);
@@ -27,14 +27,12 @@ public sealed partial class RadioChannelPrototype : IPrototype
     public Color Color { get; private set; } = Color.Lime;
 
     [IdDataField, ViewVariables]
-    public string ID { get; private set; } = default!;
+    public string ID { get; } = default!;
 
     /// <summary>
     /// If channel is long range it doesn't require telecommunication server
     /// and messages can be sent across different stations
     /// </summary>
     [DataField("longRange"), ViewVariables]
-    // StationWare edit start
     public bool LongRange = true;
-    // StationWare edit end
 }

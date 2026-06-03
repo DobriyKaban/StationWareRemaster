@@ -6,7 +6,7 @@ using Robust.Shared.Physics.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class NonSolidStructuresModifierSystem : EntitySystem
+public sealed class NonSolidStructuresModifierSystem : EntitySystem
 {
     [Dependency] private readonly PhysicsSystem _physics = default!;
     [Dependency] private readonly TagSystem _tag = default!;

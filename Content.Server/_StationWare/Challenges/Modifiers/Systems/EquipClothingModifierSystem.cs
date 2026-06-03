@@ -9,7 +9,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 /// <summary>
 /// This handles <see cref="EquipClothingModifierComponent"/>
 /// </summary>
-public sealed partial class EquipClothingModifierSystem : EntitySystem
+public sealed class EquipClothingModifierSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;

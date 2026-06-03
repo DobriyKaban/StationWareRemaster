@@ -12,7 +12,7 @@ public abstract class SharedChallengeOverlaySystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    public sealed partial class UpdateChallengeText : EntityEventArgs
+    public sealed class UpdateChallengeText : EntityEventArgs
     {
         public string Text;
         public bool Shown;

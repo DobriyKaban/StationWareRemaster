@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._StationWare.Challenges;
 using Content.Shared._StationWare.Points;
@@ -8,9 +8,9 @@ using Robust.Shared.Map;
 
 namespace Content.Server._StationWare.Points;
 
-public sealed partial class PointSystem : SharedPointSystem
+public sealed class PointSystem : SharedPointSystem
 {
-    [Dependency] private readonly PvsOverrideSystem _pvs = default!;
+    [Dependency] private readonly PVSOverrideSystem _pvs = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

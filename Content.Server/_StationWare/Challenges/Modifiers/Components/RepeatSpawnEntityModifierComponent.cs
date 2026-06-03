@@ -7,7 +7,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// via <see cref="SpawnEntityModifierComponent"/>
 /// </summary>
 [RegisterComponent]
-public sealed partial class RepeatSpawnEntityModifierComponent : Component
+public sealed class RepeatSpawnEntityModifierComponent : Component
 {
     /// <summary>
     /// The interval between each spawn

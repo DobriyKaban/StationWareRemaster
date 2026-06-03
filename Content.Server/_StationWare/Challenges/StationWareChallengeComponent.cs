@@ -1,4 +1,4 @@
-using Robust.Server.Player;
+﻿using Robust.Server.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
@@ -7,7 +7,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 namespace Content.Server._StationWare.Challenges;
 
 [RegisterComponent]
-public sealed partial class StationWareChallengeComponent : Component
+public sealed class StationWareChallengeComponent : Component
 {
     /// <summary>
     /// Whether or not the default case for the challenge is winning

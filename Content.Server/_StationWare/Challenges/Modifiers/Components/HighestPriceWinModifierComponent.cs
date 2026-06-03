@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed partial class HighestPriceWinModifierComponent : Component
+public sealed class HighestPriceWinModifierComponent : Component
 {
 
 }

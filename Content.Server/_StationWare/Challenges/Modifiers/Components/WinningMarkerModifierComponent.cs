@@ -4,7 +4,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototy
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed partial class WinningMarkerModifierComponent : Component
+public sealed class WinningMarkerModifierComponent : Component
 {
     /// <summary>
     /// The amount of the markers to give out.

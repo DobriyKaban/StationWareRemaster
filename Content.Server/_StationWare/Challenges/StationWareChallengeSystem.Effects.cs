@@ -1,4 +1,4 @@
-using Robust.Shared.Spawners;
+﻿using Content.Shared.Spawners.Components;
 
 namespace Content.Server._StationWare.Challenges;
 

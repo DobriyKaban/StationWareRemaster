@@ -371,6 +371,13 @@
   - Thief
   - HeadRev
 
+- type: entity
+  id: StationWare
+  parent: BaseGameRule
+  noSpawn: true
+  components:
+  - type: StationWareRule
+
 # event schedulers
 
 - type: entityTable

@@ -3,7 +3,7 @@ using Content.Server._StationWare.Challenges.Modifiers.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class WinLimiterSystem : EntitySystem
+public sealed class WinLimiterSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

@@ -1,9 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._StationWare.ChallengeOverlay;
 using JetBrains.Annotations;
 using Robust.Shared.Network;
-using Robust.Shared.Player;
+using Robust.Shared.Players;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._StationWare.Points;
@@ -51,7 +51,7 @@ public abstract class SharedPointSystem : EntitySystem
         if (!TryGetPointInfo(id, component, out var info))
             return;
         info.Points = value;
-        Dirty(component.Owner, component);
+        Dirty(component);
         _challengeOverlay.BroadcastText(string.Empty, false, Color.Black, id);
     }
 
@@ -70,7 +70,7 @@ public abstract class SharedPointSystem : EntitySystem
         if (!TryGetPointInfo(id, component, out var info))
             return;
         info.Points += delta;
-        Dirty(component.Owner, component);
+        Dirty(component);
         _challengeOverlay.BroadcastText(string.Empty, false, Color.Black, id);
     }
 
@@ -128,7 +128,7 @@ public abstract class SharedPointSystem : EntitySystem
         var valid = _player.Sessions.Where(s => s.UserId == id);
         var name = valid.FirstOrDefault()?.Name ?? "???";
         component.Points[id] = new PointInfo(name);
-        Dirty(component.Owner, component);
+        Dirty(component);
     }
 
     public bool TryGetHighestScoringPlayer(PointManagerComponent? component, [NotNullWhen(true)] out KeyValuePair<NetUserId, PointInfo>? highest)

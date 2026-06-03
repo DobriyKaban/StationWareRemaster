@@ -5,7 +5,7 @@
 /// LOL!!!!
 /// </summary>
 [RegisterComponent]
-public sealed partial class GibOnFailModifierComponent : Component
+public sealed class GibOnFailModifierComponent : Component
 {
 
 }

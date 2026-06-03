@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Body;
 
 [RegisterComponent]
-public sealed partial class GibOnCollideComponent : Component
+public sealed class GibOnCollideComponent : Component
 {
     [DataField("allowMultipleHits")]
     public bool AllowMultipleHits = true;

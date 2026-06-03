@@ -1,6 +1,5 @@
 using Content.Server.Body.Components;
 using Content.Shared.CCVar;
-using Content.Shared.Gibbing;
 using Content.Shared.Mobs;
 using Robust.Shared.Configuration;
 
@@ -9,7 +8,7 @@ namespace Content.Server._StationWare.Mobs;
 /// <summary>
 /// This handles deleting entities once they die.
 /// </summary>
-public sealed partial class DeleteOnDeathSystem : EntitySystem
+public sealed class DeleteOnDeathSystem : EntitySystem
 {
     [Dependency] private readonly IConfigurationManager _configuration = default!;
 

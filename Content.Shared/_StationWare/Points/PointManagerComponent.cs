@@ -1,4 +1,4 @@
-using Robust.Shared.Network;
+﻿using Robust.Shared.Network;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
@@ -12,7 +12,7 @@ namespace Content.Shared._StationWare.Points;
 /// No i don't give a shit
 /// </remarks>
 [RegisterComponent, NetworkedComponent]
-public sealed partial class PointManagerComponent : Component
+public sealed class PointManagerComponent : Component
 {
     /// <summary>
     /// All of the points for the players
@@ -22,7 +22,7 @@ public sealed partial class PointManagerComponent : Component
 }
 
 [Serializable, NetSerializable]
-public sealed partial class PointManagerComponentState : ComponentState
+public sealed class PointManagerComponentState : ComponentState
 {
     public readonly Dictionary<NetUserId, PointInfo> Points;
 
@@ -37,7 +37,7 @@ public sealed partial class PointManagerComponentState : ComponentState
 /// with their name and point amount.
 /// </summary>
 [Serializable]
-public sealed partial class PointInfo
+public sealed class PointInfo
 {
     /// <summary>
     /// The name of the player associated with the points

@@ -2,7 +2,7 @@
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class StayOnGridModifierSystem : EntitySystem
+public sealed class StayOnGridModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

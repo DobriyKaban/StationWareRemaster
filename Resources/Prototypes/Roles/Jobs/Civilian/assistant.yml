@@ -4,7 +4,7 @@
   description: job-description-passenger
   playTimeTracker: JobPassenger
   startingGear: PassengerGear
-  icon: "JobIconPassenger"
+  icon: "Passenger"
   supervisors: job-supervisors-everyone
   access:
   - Maintenance
@@ -12,21 +12,7 @@
 - type: startingGear
   id: PassengerGear
   equipment:
-    # StationWare edit start
     jumpsuit: SWClothingUniformJumpsuitPlayer
-    # StationWare edit end
+    shoes: ClothingShoesColorBlack
     ears: ClothingHeadsetGrey
-  # StationWare edit start
   innerclothingskirt: SWClothingUniformJumpskirtPlayer
-  # StationWare edit end
-
-- type: chameleonOutfit
-  id: PassengerChameleonOutfit
-  job: Passenger
-  equipment:
-    head: ClothingHeadHatWelding
-    eyes: ClothingEyesGlassesCheapSunglasses
-    mask: ClothingMaskGas
-    neck: ClothingNeckMantle
-    outerClothing: ClothingOuterWinterCoat
-    gloves: ClothingHandsGlovesColorYellowBudget

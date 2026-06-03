@@ -10,6 +10,6 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 ///     This only works on anchored entities, since tile-bound.
 /// </remarks>
 [RegisterComponent]
-public sealed partial class SpawnBlockMarkerComponent : Component
+public sealed class SpawnBlockMarkerComponent : Component
 {
 }

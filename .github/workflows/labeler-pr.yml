@@ -1,4 +1,4 @@
-﻿name: "Labels: PR"
+name: "Labels: PR"
 
 on:
 - pull_request_target
@@ -10,5 +10,8 @@ jobs:
       contents: read
       pull-requests: write
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
     - uses: actions/labeler@v5

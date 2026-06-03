@@ -5,25 +5,30 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Gravity
 {
     [RegisterComponent]
-    [AutoGenerateComponentState]
     [NetworkedComponent]
-    public sealed partial class GravityComponent : Component
+    public sealed class GravityComponent : Component
     {
-        [DataField, AutoNetworkedField]
+        [DataField("gravityShakeSound")]
         public SoundSpecifier GravityShakeSound { get; set; } = new SoundPathSpecifier("/Audio/Effects/alert.ogg");
 
-        [DataField, AutoNetworkedField]
+        [ViewVariables(VVAccess.ReadWrite)]
+        public bool EnabledVV
+        {
+            get => Enabled;
+            set
+            {
+                if (Enabled == value) return;
+                Enabled = value;
+                var ev = new GravityChangedEvent(Owner, value);
+                IoCManager.Resolve<IEntityManager>().EventBus.RaiseLocalEvent(Owner, ref ev);
+                Dirty();
+            }
+        }
+
+        [DataField("enabled")]
         public bool Enabled;
 
-        /// <summary>
-        /// Inherent gravity ensures GravitySystem won't change Enabled according to the gravity generators attached to this entity.
-        /// </summary>
-        [DataField, AutoNetworkedField]
-        public bool Inherent;
-
-        // StationWare edit start
-        [DataField("forceEnabled"), AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
+        [DataField("forceEnabled"), ViewVariables(VVAccess.ReadWrite)]
         public bool ForceEnabled;
-        // StationWare edit end
     }
 }

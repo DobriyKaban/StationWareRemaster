@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Physics;
 
 [RegisterComponent]
-public sealed partial class BouncyComponent : Component
+public sealed class BouncyComponent : Component
 {
     [DataField("minLinearVelocity")]
     public float MinLinearVelocity = 1.5f;

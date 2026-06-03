@@ -1,6 +1,7 @@
 using Content.Shared.Gravity;
 using JetBrains.Annotations;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Utility;
 
 namespace Content.Server.Gravity
 {
@@ -18,10 +19,7 @@ namespace Content.Server.Gravity
         /// </summary>
         public void RefreshGravity(EntityUid uid, GravityComponent? gravity = null)
         {
-            if (!GravityQuery.Resolve(uid, ref gravity))
-                return;
-
-            if (gravity.Inherent)
+            if (!Resolve(uid, ref gravity))
                 return;
 
             var enabled = false;
@@ -35,17 +33,15 @@ namespace Content.Server.Gravity
                 break;
             }
 
-            // StationWare edit start
             if (gravity.ForceEnabled)
                 enabled = true;
-            // StationWare edit end
 
             if (enabled != gravity.Enabled)
             {
                 gravity.Enabled = enabled;
                 var ev = new GravityChangedEvent(uid, enabled);
                 RaiseLocalEvent(uid, ref ev, true);
-                Dirty(uid, gravity);
+                Dirty(gravity);
 
                 if (HasComp<MapGridComponent>(uid))
                 {
@@ -59,23 +55,18 @@ namespace Content.Server.Gravity
             RefreshGravity(uid);
         }
 
-        /// <summary>
-        /// Enables gravity. Note that this is a fast-path for GravityGeneratorSystem.
-        /// This means it does nothing if Inherent is set and it might be wiped away with a refresh
-        ///  if you're not supposed to be doing whatever you're doing.
-        /// </summary>
         public void EnableGravity(EntityUid uid, GravityComponent? gravity = null)
         {
-            if (!GravityQuery.Resolve(uid, ref gravity))
+            if (!Resolve(uid, ref gravity))
                 return;
 
-            if (gravity.Enabled || gravity.Inherent)
+            if (gravity.Enabled)
                 return;
 
             gravity.Enabled = true;
             var ev = new GravityChangedEvent(uid, true);
             RaiseLocalEvent(uid, ref ev, true);
-            Dirty(uid, gravity);
+            Dirty(gravity);
 
             if (HasComp<MapGridComponent>(uid))
             {

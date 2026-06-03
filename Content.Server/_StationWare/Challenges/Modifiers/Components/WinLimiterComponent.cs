@@ -4,7 +4,7 @@
 /// This is used for limiting the amount of winners in a challenge.
 /// </summary>
 [RegisterComponent]
-public sealed partial class WinLimiterComponent : Component
+public sealed class WinLimiterComponent : Component
 {
     /// <summary>
     /// The numerical amount of players that are allowed to win.

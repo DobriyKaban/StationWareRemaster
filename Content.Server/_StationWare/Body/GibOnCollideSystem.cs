@@ -1,13 +1,14 @@
-using Content.Shared.Gibbing;
+﻿using Content.Server.Body.Systems;
+using Content.Shared.Body.Components;
 using Content.Shared.Mobs.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Physics.Events;
 
 namespace Content.Server._StationWare.Body;
 
-public sealed partial class GibOnCollideSystem : EntitySystem
+public sealed class GibOnCollideSystem : EntitySystem
 {
-    [Dependency] private readonly GibbingSystem _gib = default!;
+    [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly PhysicsSystem _physics = default!;
 
     /// <inheritdoc/>
@@ -19,9 +20,9 @@ public sealed partial class GibOnCollideSystem : EntitySystem
     private void OnCollide(EntityUid uid, GibOnCollideComponent component, ref StartCollideEvent args)
     {
         var otherEnt = args.OtherEntity;
-        if (!HasComp<MobStateComponent>(otherEnt))
+        if (!HasComp<MobStateComponent>(otherEnt) || !TryComp<BodyComponent>(otherEnt, out var body))
             return;
-        _gib.Gib(otherEnt, true);
+        _body.GibBody(otherEnt, true, body, true);
         if (!component.AllowMultipleHits)
             Del(uid);
     }

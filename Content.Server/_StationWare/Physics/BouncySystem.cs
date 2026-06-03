@@ -6,7 +6,7 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Physics;
 
-public sealed partial class BouncySystem : EntitySystem
+public sealed class BouncySystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly FixtureSystem _fixture = default!;

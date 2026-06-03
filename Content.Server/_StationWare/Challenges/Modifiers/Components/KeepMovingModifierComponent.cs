@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed partial class KeepMovingModifierComponent : Component
+public sealed class KeepMovingModifierComponent : Component
 {
 
 }
@@ -10,7 +10,7 @@ public sealed partial class KeepMovingModifierComponent : Component
 /// A player that is playing <see cref="KeepMovingModifierComponent"/>
 /// </summary>
 [RegisterComponent]
-public sealed partial class KeepMovingPlayerComponent : Component
+public sealed class KeepMovingPlayerComponent : Component
 {
     /// <summary>
     /// The challenge entity for the freeze modifier player

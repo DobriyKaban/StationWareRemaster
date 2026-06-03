@@ -1,12 +1,10 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Chat.Systems;
 
-using Content.Shared.Chat;
-
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class SayPhraseModifierSystem : EntitySystem
+public sealed class SayPhraseModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

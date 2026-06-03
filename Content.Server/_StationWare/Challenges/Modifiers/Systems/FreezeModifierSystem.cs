@@ -3,7 +3,7 @@ using Content.Shared.Movement.Events;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed partial class FreezeModifierSystem : EntitySystem
+public sealed class FreezeModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

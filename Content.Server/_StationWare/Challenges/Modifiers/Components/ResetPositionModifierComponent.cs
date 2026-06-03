@@ -1,7 +1,7 @@
 ﻿namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed partial class ResetPositionModifierComponent : Component
+public sealed class ResetPositionModifierComponent : Component
 {
 
 }

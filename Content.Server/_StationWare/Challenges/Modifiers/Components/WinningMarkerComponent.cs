@@ -5,7 +5,7 @@
 /// Hitting them causes the crown to transfer to that player.
 /// </summary>
 [RegisterComponent]
-public sealed partial class WinningMarkerComponent : Component
+public sealed class WinningMarkerComponent : Component
 {
     /// <summary>
     /// The challenge that this winner belongs to
