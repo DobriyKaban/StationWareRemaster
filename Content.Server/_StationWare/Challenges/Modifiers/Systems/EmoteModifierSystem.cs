@@ -1,9 +1,11 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Chat.Systems;
+
+using Content.Shared.Chat;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class EmoteModifierSystem : EntitySystem
+public sealed partial class EmoteModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

@@ -28,6 +28,16 @@ namespace Content.Client.Stylesheets
 
         protected StyleBase(IResourceCache resCache)
         {
+            // StationWare edit start
+            var wariowareinc = resCache.GetFont
+            (
+                new []
+                {
+                    "/Fonts/warioware-inc/warioware-inc.ttf"
+                },
+                12
+            );
+            // StationWare edit end
             var notoSans12 = resCache.GetFont
             (
                 new []
@@ -115,7 +125,9 @@ namespace Content.Client.Stylesheets
                     new SelectorElement(null, null, null, null),
                     new[]
                     {
-                        new StyleProperty("font", notoSans12),
+                        // StationWare edit start
+                        new StyleProperty("font", wariowareinc),
+                        // StationWare edit end
                     }),
 
                 // Default font.
@@ -123,7 +135,9 @@ namespace Content.Client.Stylesheets
                     new SelectorElement(null, new[] {StyleClass.Italic}, null, null),
                     new[]
                     {
-                        new StyleProperty("font", notoSans12Italic),
+                        // StationWare edit start
+                        new StyleProperty("font", wariowareinc),
+                        // StationWare edit end
                     }),
 
                 // Window close button base texture.

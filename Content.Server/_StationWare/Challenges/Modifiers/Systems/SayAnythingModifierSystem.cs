@@ -1,8 +1,10 @@
-﻿using Content.Server.Chat.Systems;
+using Content.Server.Chat.Systems;
+
+using Content.Shared.Chat;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
-public sealed class SayAnythingModifierSystem : EntitySystem
+public sealed partial class SayAnythingModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
 

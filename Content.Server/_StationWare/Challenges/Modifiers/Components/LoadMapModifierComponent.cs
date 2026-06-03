@@ -4,7 +4,7 @@ using Robust.Shared.Utility;
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed class LoadMapModifierComponent : Component
+public sealed partial class LoadMapModifierComponent : Component
 {
     /// <summary>
     /// Relative directory path to the given map, i.e. `Maps/ChallengeMaps/map-test.yml`
@@ -19,7 +19,7 @@ public sealed class LoadMapModifierComponent : Component
 }
 
 [RegisterComponent]
-public sealed class MapPlayerSpawnerComponent : Component
+public sealed partial class MapPlayerSpawnerComponent : Component
 {
 
 }

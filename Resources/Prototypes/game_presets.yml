@@ -1,4 +1,14 @@
 - type: gamePreset
+  id: StationWare
+  alias:
+  - bus
+  name: stationware-title
+  showInVote: true
+  description: stationware-description
+  rules:
+  - StationWare
+
+- type: gamePreset
   id: Survival
   alias:
     - survival
@@ -118,7 +128,7 @@
     - secret
     - sekrit
   name: secret-title
-  showInVote: true
+  showInVote: false
   description: secret-description
   rules:
     - Secret

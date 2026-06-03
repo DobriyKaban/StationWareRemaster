@@ -3,7 +3,7 @@ using Content.Server.Damage.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class GodmodeModifierSystem : EntitySystem
+public sealed partial class GodmodeModifierSystem : EntitySystem
 {
     [Dependency] private readonly GodmodeSystem _godmode = default!;
 

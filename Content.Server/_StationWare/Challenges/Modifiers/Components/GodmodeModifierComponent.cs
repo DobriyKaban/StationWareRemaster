@@ -4,7 +4,7 @@
 /// This is used for giving players godmode
 /// </summary>
 [RegisterComponent]
-public sealed class GodmodeModifierComponent : Component
+public sealed partial class GodmodeModifierComponent : Component
 {
 
 }

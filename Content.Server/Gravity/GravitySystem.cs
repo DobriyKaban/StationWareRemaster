@@ -35,6 +35,11 @@ namespace Content.Server.Gravity
                 break;
             }
 
+            // StationWare edit start
+            if (gravity.ForceEnabled)
+                enabled = true;
+            // StationWare edit end
+
             if (enabled != gravity.Enabled)
             {
                 gravity.Enabled = enabled;

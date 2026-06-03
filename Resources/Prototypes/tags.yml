@@ -116,6 +116,11 @@
 - type: Tag
   id: BorgTorso # Used by PartAssemblyComponent on CyborgEndoskeleton
 
+# StationWare edit start
+- type: Tag
+  id: BossRound
+# StationWare edit end
+
 - type: Tag
   id: BorgModuleCargo # Cyborg module category for salvage and cargo
 
@@ -284,6 +289,11 @@
 
 - type: Tag
   id: Catwalk # If a tagged entity is intersecting a hazard tile entity such as lava or chasms, step triggers on those hazards are cancelled.
+
+# StationWare edit start
+- type: Tag
+  id: ChallengePreventPick
+# StationWare edit end
 
 - type: Tag
   id: CentrifugeCompatible # Storage whitelist: MachineCentrifuge

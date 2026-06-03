@@ -12,11 +12,13 @@
 - type: startingGear
   id: PassengerGear
   equipment:
-    id: PassengerPDA
+    # StationWare edit start
+    jumpsuit: SWClothingUniformJumpsuitPlayer
+    # StationWare edit end
     ears: ClothingHeadsetGrey
-  #storage:
-    #back:
-    #- Stuff
+  # StationWare edit start
+  innerclothingskirt: SWClothingUniformJumpskirtPlayer
+  # StationWare edit end
 
 - type: chameleonOutfit
   id: PassengerChameleonOutfit

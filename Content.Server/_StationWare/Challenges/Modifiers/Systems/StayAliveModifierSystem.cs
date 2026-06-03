@@ -4,7 +4,7 @@ using Content.Shared.Mobs.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class StayAliveModifierSystem : EntitySystem
+public sealed partial class StayAliveModifierSystem : EntitySystem
 {
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;

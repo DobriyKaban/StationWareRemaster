@@ -3,7 +3,7 @@
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed class SpawnEntityModifierComponent : Component
+public sealed partial class SpawnEntityModifierComponent : Component
 {
     /// <summary>
     /// What entities will be spawned at the bus entrance

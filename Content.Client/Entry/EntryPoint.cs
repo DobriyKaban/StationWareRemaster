@@ -130,6 +130,9 @@ namespace Content.Client.Entry
             _prototypeManager.RegisterIgnore("ghostRoleRaffleDecider");
             _prototypeManager.RegisterIgnore("codewordGenerator");
             _prototypeManager.RegisterIgnore("codewordFaction");
+            // StationWare edit start
+            _prototypeManager.RegisterIgnore("challenge");
+            // StationWare edit end
 
             _componentFactory.GenerateNetIds();
             _adminManager.Initialize();

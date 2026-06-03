@@ -4,7 +4,7 @@ using Content.Server.Cargo.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class HighestPriceWinModifierSystem : EntitySystem
+public sealed partial class HighestPriceWinModifierSystem : EntitySystem
 {
     [Dependency] private readonly PricingSystem _pricing = default!;
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;

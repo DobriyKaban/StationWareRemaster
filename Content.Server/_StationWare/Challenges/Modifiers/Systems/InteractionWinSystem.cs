@@ -4,7 +4,7 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class InteractionWinSystem : EntitySystem
+public sealed partial class InteractionWinSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;

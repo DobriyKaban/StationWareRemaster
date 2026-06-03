@@ -7,7 +7,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// with clothing during a challenge.
 /// </summary>
 [RegisterComponent]
-public sealed class EquipClothingModifierComponent : Component
+public sealed partial class EquipClothingModifierComponent : Component
 {
     /// <summary>
     /// What entities will be spawned at the bus entrance

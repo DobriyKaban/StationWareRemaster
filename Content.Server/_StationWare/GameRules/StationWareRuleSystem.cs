@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server._StationWare.Challenges;
@@ -12,10 +12,12 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Hands.Systems;
 using Content.Shared.CombatMode;
+using Content.Shared.GameTicking.Components;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Mobs;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
+using Robust.Shared.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -23,7 +25,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._StationWare.GameRules;
 
-public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleComponent>
+public sealed partial class StationWareRuleSystem : GameRuleSystem<StationWareRuleComponent>
 {
     [Dependency] private readonly IChatManager _chatManager = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -36,7 +38,6 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
     [Dependency] private readonly ChallengeOverlaySystem _overlay = default!;
     [Dependency] private readonly PointSystem _point = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
 
     public override void Initialize()
     {
@@ -67,7 +68,7 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
                     // there's a tie!
                     foreach (var player in tiedPlayers)
                     {
-                        if (_playerManager.TryGetSessionById(player, out var playerSession))
+                        if (_player.TryGetSessionById(player, out var playerSession))
                         {
                             if (playerSession.AttachedEntity == null)
                                 return;
@@ -225,7 +226,7 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
 
     private void StartPostRoundSlaughter(List<NetUserId> ids)
     {
-        Dictionary<NetUserId, (IPlayerSession, EntityUid)> players = new();
+        Dictionary<NetUserId, (ICommonSession, EntityUid)> players = new();
         foreach (var id in ids)
         {
             if (_player.TryGetSessionById(id, out var session) && session.AttachedEntity is { } attachedEntity)

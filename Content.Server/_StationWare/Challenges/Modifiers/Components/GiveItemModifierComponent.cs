@@ -3,7 +3,7 @@
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed class GiveItemModifierComponent : Component
+public sealed partial class GiveItemModifierComponent : Component
 {
     /// <summary>
     /// What entities will be spawned and given to the player.

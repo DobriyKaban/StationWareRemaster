@@ -3,7 +3,7 @@ using Content.Shared.Inventory;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class RequireSlotOccupiedSystem : EntitySystem
+public sealed partial class RequireSlotOccupiedSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
     [Dependency] private readonly InventorySystem _invSystem = default!;

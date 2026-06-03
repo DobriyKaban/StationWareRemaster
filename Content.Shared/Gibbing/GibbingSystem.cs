@@ -1,4 +1,9 @@
 using Content.Shared.Destructible;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Network;
@@ -15,6 +20,9 @@ public sealed partial class GibbingSystem : EntitySystem
     [Dependency] private SharedDestructibleSystem _destructible = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private readonly DamageableSystem _damageable = default!;
 
     private static readonly SoundSpecifier? GibSound = new SoundCollectionSpecifier("gib", AudioParams.Default.WithVariation(0.025f));
 
@@ -33,6 +41,15 @@ public sealed partial class GibbingSystem : EntitySystem
         // This guard can be removed once it is gone and replaced by a prediction-safe system.
         if (!_net.IsServer)
             return new();
+
+        // StationWare added start - set to dead when gibbed
+        if (TryComp<DamageableComponent>(ent, out var damageable) &&
+            _mobThreshold.TryGetDeadThreshold(ent, out var threshold))
+        {
+            _damageable.SetAllDamage((ent, damageable), threshold.Value);
+            _mobState.ChangeMobState(ent, MobState.Dead);
+        }
+        // StationWare added end
 
         if (!_destructible.DestroyEntity(ent))
             return new();

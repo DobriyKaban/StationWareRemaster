@@ -1,4 +1,4 @@
-﻿using Robust.Shared.GameStates;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared._StationWare.Weapons.Melee;
 
@@ -7,7 +7,7 @@ namespace Content.Shared._StationWare.Weapons.Melee;
 /// knocks players back when they are hit.
 /// </summary>
 [RegisterComponent, NetworkedComponent]
-public sealed class KnockbackWeaponComponent : Component
+public sealed partial class KnockbackWeaponComponent : Component
 {
     /// <summary>
     /// The strength of the knockback on hit

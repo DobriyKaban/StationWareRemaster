@@ -478,3 +478,12 @@
     - id: BasicDecalDirtMonospaceVariationPass
       prob: 0.50
       orGroup: monospaceDecals
+
+# StationWare edit start
+- type: entity
+  id: StationWare
+  parent: BaseGameRule
+  noSpawn: true
+  components:
+  - type: StationWareRule
+# StationWare edit end

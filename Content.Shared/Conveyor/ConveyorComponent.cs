@@ -25,11 +25,13 @@ public sealed partial class ConveyorComponent : Component
     /// <summary>
     ///     The current state of this conveyor
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    // StationWare edit start
+    [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField, DataField("state")]
     public ConveyorState State;
 
-    [ViewVariables, AutoNetworkedField]
+    [ViewVariables, AutoNetworkedField, DataField("powered")]
     public bool Powered;
+    // StationWare edit end
 
     [DataField]
     public ProtoId<SinkPortPrototype> ForwardPort = "Forward";

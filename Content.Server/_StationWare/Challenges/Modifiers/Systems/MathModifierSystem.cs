@@ -1,12 +1,14 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Chat.Systems;
 using Robust.Shared.Random;
 
+using Content.Shared.Chat;
+
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class MathModifierSystem : EntitySystem
+public sealed partial class MathModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
     [Dependency] private readonly IRobustRandom _random = default!;

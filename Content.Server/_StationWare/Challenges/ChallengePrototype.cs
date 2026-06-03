@@ -9,7 +9,7 @@ namespace Content.Server._StationWare.Challenges;
 /// This is a prototype for a StationWare challenge.
 /// </summary>
 [Prototype("challenge")]
-public sealed class ChallengePrototype : IPrototype
+public sealed partial class ChallengePrototype : IPrototype
 {
     /// <inheritdoc/>
     [IdDataField]

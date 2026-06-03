@@ -1,15 +1,17 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server.Administration.Commands;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
 using Content.Server.Ghost.Components;
 using Content.Server.Spawners.Components;
+using Content.Shared.GameTicking;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
+using Robust.Shared.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -246,7 +248,7 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
         if (!players.Any())
             return;
 
-        HashSet<IPlayerSession> sessions = new();
+        HashSet<ICommonSession> sessions = new();
         foreach (var id in players)
         {
             if (_player.TryGetSessionById(id, out var session))
@@ -255,7 +257,7 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
         RespawnPlayers(sessions);
     }
 
-    public void RespawnPlayers(HashSet<IPlayerSession> players)
+    public void RespawnPlayers(HashSet<ICommonSession> players)
     {
         if (!players.Any())
             return;
@@ -366,4 +368,4 @@ public readonly record struct ChallengeEndEvent(List<EntityUid> Players, Diction
 /// <param name="Player"></param>
 /// <param name="Won"></param>
 [ByRefEvent]
-public readonly record struct PlayerChallengeStateSetEvent(EntityUid Challenge, StationWareChallengeComponent Component, IPlayerSession Player, bool Won, int Points = 1);
+public readonly record struct PlayerChallengeStateSetEvent(EntityUid Challenge, StationWareChallengeComponent Component, ICommonSession Player, bool Won, int Points = 1);

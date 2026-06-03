@@ -5,7 +5,7 @@
 /// mark successes and failures at a particular challenge.
 /// </summary>
 [RegisterComponent]
-public sealed class ChallengeStateEffectComponent : Component
+public sealed partial class ChallengeStateEffectComponent : Component
 {
     /// <summary>
     /// The challenge that was won/lost

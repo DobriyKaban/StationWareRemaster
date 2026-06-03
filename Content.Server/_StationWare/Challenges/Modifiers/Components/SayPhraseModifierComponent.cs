@@ -5,7 +5,7 @@
 /// must say (or not say) a specific phrase.
 /// </summary>
 [RegisterComponent]
-public sealed class SayPhraseModifierComponent : Component
+public sealed partial class SayPhraseModifierComponent : Component
 {
     /// <summary>
     /// The phrase that must be said.
@@ -21,7 +21,7 @@ public sealed class SayPhraseModifierComponent : Component
 }
 
 [RegisterComponent]
-public sealed class SayPhrasePlayerComponent : Component
+public sealed partial class SayPhrasePlayerComponent : Component
 {
     [DataField("challenge")]
     public EntityUid Challenge;

@@ -1,4 +1,5 @@
 using Content.Server.Actions;
+using Content.Server._StationWare.Challenges;
 using Content.Server.Inventory;
 using Content.Server.Polymorph.Components;
 using Content.Shared.Body;
@@ -57,6 +58,9 @@ public sealed partial class PolymorphSystem : EntitySystem
         SubscribeLocalEvent<PolymorphedEntityComponent, BeforeToolRefinedEvent>(OnBeforeToolRefined);
         SubscribeLocalEvent<PolymorphedEntityComponent, DestructionEventArgs>(OnDestruction);
         SubscribeLocalEvent<PolymorphedEntityComponent, EntityTerminatingEvent>(OnPolymorphedTerminating);
+        // StationWare edit start
+        SubscribeLocalEvent<ChallengeEndEvent>(OnChallengeEnd);
+        // StationWare edit end
 
         InitializeMap();
     }
@@ -86,6 +90,19 @@ public sealed partial class PolymorphSystem : EntitySystem
             }
         }
     }
+
+    // StationWare edit start
+    private void OnChallengeEnd(ref ChallengeEndEvent ev)
+    {
+        foreach (var player in ev.Players)
+        {
+            if (TryComp<PolymorphedEntityComponent>(player, out var polymorphed))
+            {
+                Revert((player, polymorphed));
+            }
+        }
+    }
+    // StationWare edit end
 
     private void OnComponentStartup(Entity<PolymorphableComponent> ent, ref ComponentStartup args)
     {

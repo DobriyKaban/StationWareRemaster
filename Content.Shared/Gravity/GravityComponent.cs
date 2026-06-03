@@ -20,5 +20,10 @@ namespace Content.Shared.Gravity
         /// </summary>
         [DataField, AutoNetworkedField]
         public bool Inherent;
+
+        // StationWare edit start
+        [DataField("forceEnabled"), AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
+        public bool ForceEnabled;
+        // StationWare edit end
     }
 }

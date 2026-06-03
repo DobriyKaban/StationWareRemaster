@@ -1,15 +1,15 @@
 using Content.Server._StationWare.Challenges.Modifiers.Components;
-using Content.Server.Body.Systems;
+using Content.Shared.Gibbing;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
 /// <summary>
 /// This handles the tiebreaker challenge
 /// </summary>
-public sealed class TiebreakerModifierSystem : EntitySystem
+public sealed partial class TiebreakerModifierSystem : EntitySystem
 {
     [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
-    [Dependency] private readonly BodySystem _body = default!;
+    [Dependency] private readonly GibbingSystem _gib = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -28,7 +28,7 @@ public sealed class TiebreakerModifierSystem : EntitySystem
             else
             {
                 _stationWareChallenge.SetPlayerChallengeState(player, uid, false);
-                _body.GibBody(player, true, deleteItems: true);
+                _gib.Gib(player, true);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Client.Resources;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -27,6 +27,16 @@ namespace Content.Client.Stylesheets
 
         public StyleSpace(IResourceCache resCache) : base(resCache)
         {
+            // StationWare edit start
+            var wariowareinc = resCache.GetFont
+            (
+                new []
+                {
+                    "/Fonts/warioware-inc/warioware-inc.ttf"
+                },
+                12
+            );
+            // StationWare edit end
             var notoSans10 = resCache.GetFont
             (
                 new []
@@ -73,11 +83,15 @@ namespace Content.Client.Stylesheets
             Stylesheet = new Stylesheet(BaseRules.Concat(new StyleRule[]
             {
                 Element<Label>().Class(StyleClass.LabelHeading)
-                    .Prop(Label.StylePropertyFont, notoSansBold16)
+                    // StationWare edit start
+                    .Prop(Label.StylePropertyFont, wariowareinc)
+                    // StationWare edit end
                     .Prop(Label.StylePropertyFontColor, SpaceRed),
 
                 Element<Label>().Class(StyleClass.LabelSubText)
-                    .Prop(Label.StylePropertyFont, notoSans10)
+                    // StationWare edit start
+                    .Prop(Label.StylePropertyFont, wariowareinc)
+                    // StationWare edit end
                     .Prop(Label.StylePropertyFontColor, Color.DarkGray),
 
                 Element<PanelContainer>().Class(StyleClass.HighDivider)
