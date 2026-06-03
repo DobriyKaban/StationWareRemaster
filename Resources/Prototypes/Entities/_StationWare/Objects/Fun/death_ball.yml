@@ -1,0 +1,38 @@
+﻿- type: entity
+  id: DeathBall
+  name: death ball
+  description: Takes you right back to middle school.
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: MovementIgnoreGravity
+  - type: Sprite
+    sprite: _StationWare/Objects/Fun/deathball.rsi
+    noRot: true
+    layers:
+    - state: icon
+  - type: PointLight
+    radius: 3
+    color: white
+    energy: 2.0
+  - type: Bouncy
+    minLinearVelocity: 10
+    maxLinearVelocity: 10
+    angularVelocity: 5
+  - type: GibOnCollide
+  - type: Physics
+    bodyType: Dynamic
+    linearDamping: 0
+    angularDamping: 0
+  - type: Fixtures
+    fixtures:
+      fix:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 1
+        restitution: 1.5
+        hard: true
+        layer:
+        - Impassable
+        - Opaque

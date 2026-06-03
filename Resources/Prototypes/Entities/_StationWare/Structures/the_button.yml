@@ -1,0 +1,18 @@
+- type: entity
+  id: TheButton
+  parent: BaseStructure
+  name: The Button
+  description: What's it gonna be? Win or lose?
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    noRot: true
+    netsync: false
+    sprite: _StationWare/Structures/the_button.rsi
+    layers:
+    - state: icon
+  - type: InteractionOutline
+  - type: InteractionWin
+    winChance: 0.5
+    failOnNoWin: true

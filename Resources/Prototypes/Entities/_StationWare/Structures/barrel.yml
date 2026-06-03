@@ -1,0 +1,24 @@
+- type: entity
+  id: SWWinBarrel
+  parent: BaseStructureDynamic
+  name: barrel
+  description: What a cool barrel! You should break it.
+  components:
+  - type: InteractionOutline
+  - type: Sprite
+    noRot: true
+    sprite: _StationWare/Structures/barrel.rsi
+    state: icon
+  - type: Damageable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 5
+      behaviors:
+      - !type:SetChallengeState
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/woodhit.ogg
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

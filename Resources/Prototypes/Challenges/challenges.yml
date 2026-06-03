@@ -1,0 +1,532 @@
+- type: challenge
+  id: DeathBallChallenge
+  announcement: challenge-death-ball
+  winByDefault: true
+  duration: 5
+  invertSpeedup: true
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.1 #one every 10 players
+    spawns:
+    - id: DeathBall
+      amount: 100
+
+- type: challenge
+  id: FreezeChallenge
+  announcement: challenge-freeze
+  winByDefault: true
+  startDelay: 1
+  duration: 5
+  challengeModifiers:
+  - type: FreezeModifier
+
+- type: challenge
+  id: SayStationWareChallenge
+  announcement: challenge-say-stationware
+  winByDefault: false
+  duration: 5
+  challengeModifiers:
+  - type: SayPhraseModifier
+    phrase: "StationWare"
+
+- type: challenge
+  id: KeepMovingChallenge
+  announcement: challenge-keep-moving
+  winByDefault: true
+  startDelay: 1
+  duration: 5
+  invertSpeedup: true
+  challengeModifiers:
+  - type: KeepMovingModifier
+
+- type: challenge
+  id: BreakBarrelChallenge
+  announcement: challenge-break-barrel
+  duration: 5
+  challengeModifiers:
+  - type: SpawnEntityModifier
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.5
+    clumpSize: 1
+    spawns:
+    - id: SWWinBarrel
+      amount: 100
+
+- type: challenge
+  id: KingOfTheHillChallenge
+  announcement: challenge-king-of-the-hill
+  duration: 10
+  challengeModifiers:
+  - type: GiveItemModifier
+    items:
+    - id: SWBaseBallBatKnockback
+  - type: ControlPointModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawns:
+    - id: ControlPoint
+
+- type: challenge
+  id: WinningTileChallenge
+  announcement: challenge-winning-tile
+  duration: 5
+  challengeModifiers:
+  - type: ControlPointModifier
+  - type: SpawnEntityModifier
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.75
+    clumpSize: 1
+    spawns:
+    - id: WinningTile
+      amount: 100
+
+- type: challenge
+  id: DIYMusicalChairsChallenge
+  announcement: challenge-diy-chairs
+  duration: 10
+  challengeModifiers:
+  - type: BuckledWinModifier
+  - type: GiveItemModifier
+    items:
+    - id: SheetSteel
+
+- type: challenge
+  id: GetRichChallenge
+  announcement: challenge-get-rich
+  duration: 10
+  challengeModifiers:
+  - type: HighestPriceWinModifier
+  - type: RepeatSpawnEntityModifier
+    interval: 1
+  - type: SpawnEntityModifier
+    clumpSize: 1
+    spawns:
+    - id: MaterialDiamond1
+    - id: IngotGold1
+    - id: IngotSilver1
+    - id: SheetPlasma1
+    - id: SheetPlasteel1
+    - id: SpaceCash10
+      maxAmount: 5
+    - id: SheetSteel1
+      maxAmount: 5
+    - id: SheetGlass1
+      maxAmount: 5
+    - id: SheetPlastic1
+      maxAmount: 5
+
+- type: challenge
+  id: MusicalChairsChallenge
+  announcement: challenge-musical-chairs
+  duration: 5
+  challengeModifiers:
+  - type: BuckledWinModifier
+  - type: SpawnEntityModifier
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.5
+    clumpSize: 1
+    spawns:
+    - id: ComfyChair
+      amount: 100 #it won't spawn 100
+
+- type: challenge
+  id: NotSpleefChallenge
+  announcement: challenge-not-spleef
+  winByDefault: true
+  duration: 15
+  challengeModifiers:
+  - type: NonSolidStructuresModifier
+  - type: StayOnGridModifier
+  - type: ResetPositionModifier
+  - type: GiveItemModifier
+    items:
+    - id: SWBaseBallBatKnockback
+    - id: SoapSyndie
+      prob: 0.5
+      orGroup: soab #soab
+    - id: SoapOmega
+      prob: 0.5
+      orGroup: soab #soab
+  - type: SpawnEntityModifier
+    clumpSize: 1
+    spawns:
+    - id: SoapSyndie
+      amount: 10
+      maxAmount: 15
+
+- type: challenge
+  id: FindIanChallenge
+  announcement: challenge-find-ian
+  winByDefault: false
+  duration: 10
+  challengeModifiers:
+  - type: SpawnEntityModifier
+    clumpSize: 1
+    spawns:
+    - id: SWMobCorgiIan
+    - id: MobCorgi
+      amount: 99
+
+- type: challenge
+  id: ExplodingTileChallenge
+  announcement: challenge-exploding-tile
+  winByDefault: true
+  startDelay: 3
+  duration: 10
+  invertSpeedup: true
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: StayOnGridModifier
+  - type: RepeatSpawnEntityModifier
+    interval: 0.5
+  - type: SpawnEntityModifier
+    clumpSize: 1
+    spawns:
+    - id: ExplodingTile
+      amount: 5
+
+- type: challenge
+  id: ShootoutChallenge
+  announcement: challenge-shootout
+  winByDefault: true
+  duration: 15
+  challengeModifiers:
+  - type: LoadMapModifier
+    mapPath: /Maps/ChallengeMaps/nostalgia.yml
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: WeaponShotgunEnforcer
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponShotgunDoubleBarreled
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponSniperHristov
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponRifleLecter
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponLauncherRocket
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponPistolViper
+      orGroup: weapon
+      amount: 2
+      prob: 0.165
+    - id: BikeHorn
+      orGroup: weapon
+      prob: 0.1
+
+- type: challenge
+  id: XenoQueenChallenge
+  announcement: challenge-xeno-queen
+  winByDefault: true
+  duration: 15
+  invertSpeedup: true
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: StayOnGridModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawns:
+    - id: MobXenoQueen
+      amount: 3
+      maxAmount: 10
+
+- type: challenge
+  id: TheButtonChallenge
+  announcement: challenge-the-button
+  winByDefault: false
+  duration: 5
+  challengeModifiers:
+  - type: SpawnEntityModifier
+    spawns:
+    - id: TheButton
+  - type: GibOnFailModifier
+
+- type: challenge
+  id: WizardDuelChallenge
+  announcement: challenge-wizard-duel
+  winByDefault: true
+  duration: 10
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: SmiteBook
+      orGroup: weapon
+      prob: 0.165
+    - id: SmiteBook
+      orGroup: weapon
+      prob: 0.165
+    - id: ForceWallSpellbook
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponWandDeath
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponWandPolymorphCarp
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponWandFireball
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponWandPolymorphMonkey
+      orGroup: weapon
+      prob: 0.165
+    - id: WeaponStaffHealing
+      orGroup: weapon
+      prob: 0.165
+    - id: RGBStaff
+      orGroup: weapon
+      prob: 0.165
+  - type: EquipClothingModifier
+    spawns:
+    - id: ClothingHeadHatWizard
+      orGroup: hat
+      prob: 0.33
+    - id: ClothingHeadHatVioletwizard
+      orGroup: hat
+      prob: 0.33
+    - id: ClothingHeadHatRedwizard
+      orGroup: hat
+      prob: 0.33
+
+- type: challenge
+  id: OneShotGunChallenge
+  announcement: challenge-one-shot-gun
+  winByDefault: true
+  duration: 10
+  startDelay: 1
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: SWWeaponOneShotGun
+
+- type: challenge
+  id: KeepTheCrownChallenge
+  announcement: challenge-keep-the-crown
+  winByDefault: false
+  duration: 10
+  challengeModifiers:
+  - type: WinningMarkerModifier
+    markerEffectPrototype: CrownEffect
+
+- type: challenge
+  id: AcidTripChallenge
+  announcement: challenge-acid-trip
+  winByDefault: true
+  duration: 15
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: SWAcidExtinguisher
+
+- type: challenge
+  id: PutThatHelmetOnChallenge
+  announcement: challenge-put-that-helmet-on
+  duration: 5
+  challengeModifiers:
+  - type: SpawnEntityModifier
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.25
+    spawns:
+    - id: ClothingOuterHardsuitSpatio
+      amount: 100
+  - type: RequireSlotOccupied
+    slot: "head"
+
+- type: challenge
+  id: GreytideChallenge
+  announcement: challenge-greytide
+  winByDefault: true
+  duration: 5
+  startDelay: 0
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: SWToolboxGreytide
+
+- type: challenge
+  id: LandmineChallenge
+  announcement: challenge-landmine
+  winByDefault: true
+  duration: 5
+  startDelay: 3
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: GiveItemModifier
+    items:
+    - id: SWBaseBallBatKnockback
+    - id: SoapSyndie
+      prob: 0.5
+      orGroup: soab #soab
+  - type: SpawnEntityModifier
+    spawns:
+    - id: LandMineExplosive
+      amount: 10
+    - id: MobRatServant
+      amount: 3
+
+- type: challenge
+  id: MorbChallenge
+  announcement: challenge-morb
+  winByDefault: true
+  duration: 10
+  invertSpeedup: true
+  startDelay: 3
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawns:
+    - id: MobFleshJared
+      amount: 3
+      maxAmount: 12
+    - id: MobFleshGolem
+      amount: 3
+      maxAmount: 12
+    - id: MobFleshClamp
+      amount: 3
+      maxAmount: 12
+    - id: MobFleshLover
+      amount: 3
+      maxAmount: 12
+    - id: FleshBlocker
+      amount: 3
+      maxAmount: 18
+
+- type: challenge
+  id: XenosChallenge
+  announcement: challenge-xenos
+  winByDefault: true
+  duration: 10
+  invertSpeedup: true
+  startDelay: 3
+  challengeModifiers:
+  - type: LoadMapModifier
+    mapPath: /Maps/ChallengeMaps/beach.yml
+  - type: StayAliveModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawns:
+    - id: MobXenoDrone
+      amount: 3
+      maxAmount: 15
+    - id: MobXenoRavager
+      prob: 0.125
+      amount: 3
+      maxAmount: 15
+    - id: MobXenoRunner
+      prob: 0.125
+      amount: 3
+      maxAmount: 15
+    - id: MobXenoQueen
+      prob: 0.125
+      amount: 1
+      maxAmount: 1
+    - id: MobXenoPraetorian
+      prob: 0.35
+      amount: 1
+      maxAmount: 13
+    - id: MobXenoSpitter
+      prob: 0.5
+      amount: 1
+      maxAmount: 13
+    - id: MobXenoRouny # rouny!
+      prob: 0.01
+      amount: 1
+      maxAmount: 15
+  - type: GiveItemModifier
+    items:
+    - id: WeaponPulseCarbine
+  - type: EquipClothingModifier
+    spawns:
+    - id: ClothingOuterHardsuitDeathsquad
+
+- type: challenge
+  id: HideInALockerChallenge
+  announcement: challenge-hide
+  startDelay: 0
+  duration: 5
+  challengeModifiers:
+  - type: SpawnEntityModifier
+    spawns:
+    - id: ClosetBase
+      amount: 3
+  - type: IsInsideStorageModifier
+
+- type: challenge
+  id: SayAnythingLiterallyChallenge
+  announcement: challenge-say-anything-literally
+  winByDefault: false
+  duration: 5
+  challengeModifiers:
+  - type: SayPhraseModifier
+    phrase: "Anything"
+
+- type: challenge
+  id: SayAnythingChallenge
+  announcement: challenge-say-anything
+  winByDefault: false
+  duration: 5
+  challengeModifiers:
+  - type: SayAnythingModifier
+
+- type: challenge
+  id: ShutUpChallenge
+  announcement: challenge-shut-up
+  winByDefault: true
+  duration: 5
+  challengeModifiers:
+  - type: SayAnythingModifier
+    shouldSpeak: false
+  - type: EmoteModifier
+    shouldEmote: false
+  - type: GibOnFailModifier # funny!
+
+- type: challenge
+  id: MathChallenge
+  winByDefault: false
+  announcement: challenge-math
+  duration: 4
+  challengeModifiers:
+  - type: MathModifier
+
+- type: challenge
+  id: ClapChallenge
+  announcement: challenge-clap
+  winByDefault: false
+  duration: 4
+  challengeModifiers:
+  - type: EmoteModifier
+    targetEmotes:
+    - Clap
+
+- type: challenge
+  id: ScreamChallenge
+  announcement: challenge-scream
+  winByDefault: false
+  duration: 4
+  challengeModifiers:
+  - type: EmoteModifier
+    targetEmotes:
+    - Scream
+
+- type: challenge
+  id: SnapChallenge
+  announcement: challenge-snap
+  winByDefault: false
+  duration: 4
+  challengeModifiers:
+  - type: EmoteModifier
+    targetEmotes:
+    - Snap

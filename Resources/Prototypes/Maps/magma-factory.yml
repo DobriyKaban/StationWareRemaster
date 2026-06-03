@@ -1,0 +1,21 @@
+﻿- type: gameMap
+  id: MagmaFactory
+  mapName: 'Magma Factory'
+  mapPath: /Maps/magma-factory.yml
+  minPlayers: 15
+  stations:
+    MagmaFactory:
+      stationProto: StandardNanotrasenStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: '{0} Magma Factory {1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: 'SW'
+        - type: StationEmergencyShuttle
+          emergencyShuttlePath: /Maps/Shuttles/emergency_courser.yml
+        - type: StationJobs
+          overflowJobs:
+            - Passenger
+          availableJobs:
+           Passenger: [ -1, -1 ]

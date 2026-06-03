@@ -1,0 +1,21 @@
+- type: gameMap
+  id: Dome
+  mapName: 'Dome'
+  mapPath: /Maps/dome.yml
+  minPlayers: 0
+  stations:
+    Stationware:
+      stationProto: StandardNanotrasenStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: '{0} Dome {1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: 'SW'
+        - type: StationEmergencyShuttle
+          emergencyShuttlePath: /Maps/Shuttles/emergency_courser.yml
+        - type: StationJobs
+          overflowJobs:
+            - Passenger
+          availableJobs:
+            Passenger: [ -1, -1 ]
