@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Spawners.Components;
 using Robust.Server.GameObjects;
@@ -6,10 +6,10 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class ResetPositionModifierSystem : EntitySystem
+public sealed partial class ResetPositionModifierSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private TransformSystem _transform = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

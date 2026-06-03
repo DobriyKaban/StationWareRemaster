@@ -1,13 +1,13 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Cargo.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class HighestPriceWinModifierSystem : EntitySystem
+public sealed partial class HighestPriceWinModifierSystem : EntitySystem
 {
-    [Dependency] private readonly PricingSystem _pricing = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private PricingSystem _pricing = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

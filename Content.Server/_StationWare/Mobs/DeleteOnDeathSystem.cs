@@ -1,5 +1,6 @@
 using Content.Server.Body.Components;
 using Content.Shared.CCVar;
+using Content.Shared.Gibbing;
 using Content.Shared.Mobs;
 using Robust.Shared.Configuration;
 
@@ -8,9 +9,9 @@ namespace Content.Server._StationWare.Mobs;
 /// <summary>
 /// This handles deleting entities once they die.
 /// </summary>
-public sealed class DeleteOnDeathSystem : EntitySystem
+public sealed partial class DeleteOnDeathSystem : EntitySystem
 {
-    [Dependency] private readonly IConfigurationManager _configuration = default!;
+    [Dependency] private IConfigurationManager _configuration = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -33,12 +34,12 @@ public sealed class DeleteOnDeathSystem : EntitySystem
         QueueDel(ev.Target);
     }
 
-    private void OnBeingGibbed(BeingGibbedEvent ev)
+    private void OnBeingGibbed(ref BeingGibbedEvent ev)
     {
         if (!_enabled)
             return;
 
-        foreach (var part in ev.GibbedParts)
+        foreach (var part in ev.Giblets)
         {
             if (!Deleted(part) && !Terminating(part))
                 QueueDel(part);

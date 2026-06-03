@@ -1,4 +1,4 @@
-﻿using Robust.Server.GameObjects;
+using Robust.Server.GameObjects;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
@@ -6,11 +6,11 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Physics;
 
-public sealed class BouncySystem : EntitySystem
+public sealed partial class BouncySystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly FixtureSystem _fixture = default!;
-    [Dependency] private readonly PhysicsSystem _physics = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private FixtureSystem _fixture = default!;
+    [Dependency] private PhysicsSystem _physics = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -24,7 +24,7 @@ public sealed class BouncySystem : EntitySystem
             return;
 
         var fixtures = Comp<FixturesComponent>(uid);
-        _physics.SetBodyStatus(physics, BodyStatus.InAir);
+        _physics.SetBodyStatus(uid, physics, BodyStatus.InAir);
         _physics.WakeBody(uid, manager: fixtures, body: physics);
 
         foreach (var fixture in fixtures.Fixtures.Values)

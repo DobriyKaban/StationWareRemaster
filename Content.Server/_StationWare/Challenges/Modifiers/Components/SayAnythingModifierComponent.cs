@@ -4,13 +4,13 @@
 /// This is used for getting players to speak
 /// </summary>
 [RegisterComponent]
-public sealed class SayAnythingModifierComponent : Component
+public sealed partial class SayAnythingModifierComponent : Component
 {
     [DataField("shouldSpeak")] public bool ShouldSpeak = true;
 }
 
 [RegisterComponent]
-public sealed class SayAnythingPlayerComponent : Component
+public sealed partial class SayAnythingPlayerComponent : Component
 {
     [DataField("challenge")] public EntityUid Challenge;
 }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Storage;
@@ -9,10 +9,10 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 /// <summary>
 /// This handles <see cref="EquipClothingModifierComponent"/>
 /// </summary>
-public sealed class EquipClothingModifierSystem : EntitySystem
+public sealed partial class EquipClothingModifierSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private InventorySystem _inventory = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -33,7 +33,8 @@ public sealed class EquipClothingModifierSystem : EntitySystem
             var xform = Transform(player);
             if (!TryComp<InventoryComponent>(player, out var inventory))
                 continue;
-            var slots = _inventory.GetSlots(player, inventory);
+            if (!_inventory.TryGetSlots(player, out var slots))
+                continue;
             var spawns = EntitySpawnCollection.GetSpawns(component.Spawns, _random);
             foreach (var spawn in spawns)
             {

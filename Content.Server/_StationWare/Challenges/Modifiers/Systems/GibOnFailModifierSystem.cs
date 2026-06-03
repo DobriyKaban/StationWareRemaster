@@ -1,11 +1,11 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
-using Content.Server.Body.Systems;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Shared.Gibbing;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class GibOnFailModifierSystem : EntitySystem
+public sealed partial class GibOnFailModifierSystem : EntitySystem
 {
-    [Dependency] private readonly BodySystem _body = default!;
+    [Dependency] private GibbingSystem _gib = default!;
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -18,6 +18,6 @@ public sealed class GibOnFailModifierSystem : EntitySystem
             return;
         if (args.Player.AttachedEntity is not { } ent)
             return;
-        _body.GibBody(ent, true, deleteItems: true);
+        _gib.Gib(ent, true);
     }
 }

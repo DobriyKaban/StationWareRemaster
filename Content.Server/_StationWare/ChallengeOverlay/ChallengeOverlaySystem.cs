@@ -1,13 +1,13 @@
-﻿using Content.Shared._StationWare.ChallengeOverlay;
+using Content.Shared._StationWare.ChallengeOverlay;
 using Robust.Server.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 
 namespace Content.Server._StationWare.ChallengeOverlay;
 
-public sealed class ChallengeOverlaySystem : SharedChallengeOverlaySystem
+public sealed partial class ChallengeOverlaySystem : SharedChallengeOverlaySystem
 {
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
 
     public override void BroadcastText(string text, bool shown, Color textColor, NetUserId id)
     {
@@ -15,7 +15,7 @@ public sealed class ChallengeOverlaySystem : SharedChallengeOverlaySystem
             BroadcastText(text, shown, textColor, session);
     }
 
-    public void BroadcastText(string text, bool shown, Color textColor, IPlayerSession? session = null)
+    public void BroadcastText(string text, bool shown, Color textColor, ICommonSession? session = null)
     {
         var filter = Filter.Empty();
 

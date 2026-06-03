@@ -1,13 +1,13 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Buckle.Systems;
 using Content.Shared.Buckle.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class BuckledWinModifierSystem : EntitySystem
+public sealed partial class BuckledWinModifierSystem : EntitySystem
 {
-    [Dependency] private readonly BuckleSystem _buckle = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private BuckleSystem _buckle = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -21,7 +21,7 @@ public sealed class BuckledWinModifierSystem : EntitySystem
         {
             if (TryComp<BuckleComponent>(player, out var buckle) && buckle.Buckled)
             {
-                _buckle.TryUnbuckle(player, player, true, buckle);
+                _buckle.TryUnbuckle((player, buckle), player, true);
                 _stationWareChallenge.SetPlayerChallengeState(player, uid, true, args.Component);
             }
         }

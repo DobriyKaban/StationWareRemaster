@@ -1,15 +1,17 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server.Administration.Commands;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking;
-using Content.Server.Ghost.Components;
+using Content.Shared.GameTicking;
+using Content.Shared.Ghost;
 using Content.Server.Spawners.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
+using Robust.Shared.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -22,18 +24,18 @@ namespace Content.Server._StationWare.Challenges;
 
 public sealed partial class StationWareChallengeSystem : EntitySystem
 {
-    [Dependency] private readonly IComponentFactory _componentFactory = default!;
-    [Dependency] private readonly IConsoleHost _consoleHost = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ISerializationManager _serialization = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly ChallengeOverlaySystem _overlay = default!;
+    [Dependency] private IComponentFactory _componentFactory = default!;
+    [Dependency] private IConsoleHost _consoleHost = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ISerializationManager _serialization = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private ChallengeOverlaySystem _overlay = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -85,7 +87,7 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
             comp.Owner = uid;
             var temp = (object) comp;
             _serialization.CopyTo(entry.Component, ref temp);
-            EntityManager.AddComponent(uid, (Component) temp!, true);
+            AddComp(uid, (Component) temp!, true);
         }
 
         foreach (var id in participants.Keys)
@@ -246,7 +248,7 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
         if (!players.Any())
             return;
 
-        HashSet<IPlayerSession> sessions = new();
+        HashSet<ICommonSession> sessions = new();
         foreach (var id in players)
         {
             if (_player.TryGetSessionById(id, out var session))
@@ -255,7 +257,9 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
         RespawnPlayers(sessions);
     }
 
-    public void RespawnPlayers(HashSet<IPlayerSession> players)
+    [Dependency] private Content.Shared.Administration.Systems.RejuvenateSystem _rejuvenate = default!;
+
+    public void RespawnPlayers(HashSet<ICommonSession> players)
     {
         if (!players.Any())
             return;
@@ -270,11 +274,11 @@ public sealed partial class StationWareChallengeSystem : EntitySystem
                 HasComp<GhostComponent>(entity) || // are you a ghostie?
                 !HasComp<MobStateComponent>(entity)) // or did you get your ass gibbed
             {
-                _gameTicker.SpawnPlayer(session, EntityUid.Invalid, null, false, false);
+                _gameTicker.MakeJoinGame(session, EntityUid.Invalid, silent: true);
                 continue;
             }
 
-            RejuvenateCommand.PerformRejuvenate(entity);
+            _rejuvenate.PerformRejuvenate(entity);
 
             var xform = Transform(entity);
             if (xform.GridUid == null)
@@ -366,4 +370,4 @@ public readonly record struct ChallengeEndEvent(List<EntityUid> Players, Diction
 /// <param name="Player"></param>
 /// <param name="Won"></param>
 [ByRefEvent]
-public readonly record struct PlayerChallengeStateSetEvent(EntityUid Challenge, StationWareChallengeComponent Component, IPlayerSession Player, bool Won, int Points = 1);
+public readonly record struct PlayerChallengeStateSetEvent(EntityUid Challenge, StationWareChallengeComponent Component, ICommonSession Player, bool Won, int Points = 1);

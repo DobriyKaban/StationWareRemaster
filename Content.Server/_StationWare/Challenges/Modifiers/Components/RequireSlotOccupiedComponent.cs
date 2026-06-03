@@ -6,7 +6,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// This is used for events to check whether their slot has a prototype or is generally occupied
 /// </summary>
 [RegisterComponent]
-public sealed class RequireSlotOccupiedComponent : Component
+public sealed partial class RequireSlotOccupiedComponent : Component
 {
     /// <summary>
     /// The slot that must be occupied

@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Chat.Systems;
@@ -6,18 +6,18 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class MathModifierSystem : EntitySystem
+public sealed partial class MathModifierSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ChallengeOverlaySystem _overlay = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ChallengeOverlaySystem _overlay = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
         SubscribeLocalEvent<MathModifierComponent, ChallengeStartEvent>(OnChallengeStart);
         SubscribeLocalEvent<MathPlayerComponent, PlayerChallengeStateSetEvent>(OnChallengeStateSet);
-        SubscribeLocalEvent<MathPlayerComponent, EntitySpokeEvent>(OnSpoke);
+        SubscribeLocalEvent<MathPlayerComponent, Content.Shared.Chat.EntitySpokeEvent>(OnSpoke);
     }
 
     private void OnChallengeStart(EntityUid uid, MathModifierComponent component, ref ChallengeStartEvent args)
@@ -58,7 +58,7 @@ public sealed class MathModifierSystem : EntitySystem
         RemComp(uid, component);
     }
 
-    private void OnSpoke(EntityUid uid, MathPlayerComponent component, EntitySpokeEvent args)
+    private void OnSpoke(EntityUid uid, MathPlayerComponent component, Content.Shared.Chat.EntitySpokeEvent args)
     {
         if (!TryComp<MathModifierComponent>(component.Challenge, out var modifier))
             return;

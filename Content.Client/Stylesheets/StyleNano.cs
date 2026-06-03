@@ -25,16 +25,17 @@ namespace Content.Client.Stylesheets
         {
             var ds = display ? "Display" : "";
             var sv = variation.StartsWith("Bold", StringComparison.Ordinal) ? "Bold" : "Regular";
-            // StationWare edit start
             return resCache.GetFont
             (
+                // Ew, but ok
                 new[]
                 {
-                    "/Fonts/warioware-inc/warioware-inc.ttf"
+                    $"/Fonts/NotoSans{ds}/NotoSans{ds}-{variation}.ttf",
+                    $"/Fonts/NotoSans/NotoSansSymbols-{sv}.ttf",
+                    "/Fonts/NotoSans/NotoSansSymbols2-Regular.ttf"
                 },
                 size
             );
-            // StationWare edit end
 
         }
 

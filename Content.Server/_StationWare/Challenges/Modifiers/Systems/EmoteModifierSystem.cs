@@ -1,18 +1,18 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Chat.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class EmoteModifierSystem : EntitySystem
+public sealed partial class EmoteModifierSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
         SubscribeLocalEvent<EmoteModifierComponent, ChallengeStartEvent>(OnChallengeStart);
         SubscribeLocalEvent<EmotePlayerComponent, PlayerChallengeStateSetEvent>(OnChallengeStateSet);
-        SubscribeLocalEvent<EmotePlayerComponent, EmoteEvent>(OnEmote);
+        SubscribeLocalEvent<EmotePlayerComponent, Content.Shared.Chat.EmoteEvent>(OnEmote);
     }
 
     private void OnChallengeStart(EntityUid uid, EmoteModifierComponent component, ref ChallengeStartEvent args)
@@ -28,7 +28,7 @@ public sealed class EmoteModifierSystem : EntitySystem
         RemComp(uid, component);
     }
 
-    private void OnEmote(EntityUid uid, EmotePlayerComponent component, ref EmoteEvent args)
+    private void OnEmote(EntityUid uid, EmotePlayerComponent component, ref Content.Shared.Chat.EmoteEvent args)
     {
         if (!TryComp<EmoteModifierComponent>(component.Challenge, out var modifier))
             return;

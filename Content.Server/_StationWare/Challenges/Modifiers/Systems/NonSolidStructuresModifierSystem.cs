@@ -1,4 +1,4 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Shared.Tag;
 using Robust.Server.GameObjects;
 using Robust.Shared.Physics;
@@ -6,10 +6,10 @@ using Robust.Shared.Physics.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class NonSolidStructuresModifierSystem : EntitySystem
+public sealed partial class NonSolidStructuresModifierSystem : EntitySystem
 {
-    [Dependency] private readonly PhysicsSystem _physics = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
+    [Dependency] private PhysicsSystem _physics = default!;
+    [Dependency] private TagSystem _tag = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

@@ -1,12 +1,14 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Shared.Inventory;
+using Content.Shared.Whitelist;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class RequireSlotOccupiedSystem : EntitySystem
+public sealed partial class RequireSlotOccupiedSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
-    [Dependency] private readonly InventorySystem _invSystem = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private InventorySystem _invSystem = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -24,7 +26,7 @@ public sealed class RequireSlotOccupiedSystem : EntitySystem
             if (slotEntity == null)
                 continue;
 
-            if (component.Whitelist?.IsValid(slotEntity.Value) ?? true)
+            if (component.Whitelist == null || _whitelist.IsValid(component.Whitelist, slotEntity.Value))
                 _stationWareChallenge.SetPlayerChallengeState(player, uid, true, args.Component);
         }
     }

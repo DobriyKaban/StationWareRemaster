@@ -1,10 +1,10 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class StayOnGridModifierSystem : EntitySystem
+public sealed partial class StayOnGridModifierSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

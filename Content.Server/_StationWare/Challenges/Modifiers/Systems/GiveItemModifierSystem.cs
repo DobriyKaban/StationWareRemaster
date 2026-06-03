@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Hands.Systems;
 using Content.Shared.Hands.Components;
@@ -7,10 +7,10 @@ using Robust.Shared.Random;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class GiveItemModifierSystem : EntitySystem
+public sealed partial class GiveItemModifierSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly HandsSystem _hands = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private HandsSystem _hands = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

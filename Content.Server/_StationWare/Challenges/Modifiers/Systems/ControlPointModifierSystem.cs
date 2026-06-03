@@ -1,13 +1,13 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Physics.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class ControlPointModifierSystem : EntitySystem
+public sealed partial class ControlPointModifierSystem : EntitySystem
 {
-    [Dependency] private readonly PhysicsSystem _physics = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private PhysicsSystem _physics = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -17,9 +17,9 @@ public sealed class ControlPointModifierSystem : EntitySystem
 
     private void OnBeforeChallengeEnd(EntityUid uid, ControlPointModifierComponent component, ref BeforeChallengeEndEvent args)
     {
-        foreach (var (_, body) in EntityQuery<ControlPointComponent, PhysicsComponent>())
+        foreach (var (cp, body) in EntityQuery<ControlPointComponent, PhysicsComponent>())
         {
-            foreach (var contact in _physics.GetContactingEntities(body))
+            foreach (var contact in _physics.GetContactingEntities(body.Owner, body))
             {
                 var ent = contact;
                 if (!args.Players.Contains(ent))

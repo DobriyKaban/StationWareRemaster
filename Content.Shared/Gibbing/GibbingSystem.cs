@@ -20,9 +20,9 @@ public sealed partial class GibbingSystem : EntitySystem
     [Dependency] private SharedDestructibleSystem _destructible = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+[Dependency] private MobThresholdSystem _mobThreshold = default!;
+[Dependency] private DamageableSystem _damageable = default!;
 
     private static readonly SoundSpecifier? GibSound = new SoundCollectionSpecifier("gib", AudioParams.Default.WithVariation(0.025f));
 

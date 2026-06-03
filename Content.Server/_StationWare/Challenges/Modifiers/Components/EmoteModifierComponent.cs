@@ -7,7 +7,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// This is used for getting players to emote
 /// </summary>
 [RegisterComponent]
-public sealed class EmoteModifierComponent : Component
+public sealed partial class EmoteModifierComponent : Component
 {
     [DataField("shouldEmote")]
     public bool ShouldEmote = true;
@@ -20,7 +20,7 @@ public sealed class EmoteModifierComponent : Component
 }
 
 [RegisterComponent]
-public sealed class EmotePlayerComponent : Component
+public sealed partial class EmotePlayerComponent : Component
 {
     [DataField("challenge")] public EntityUid Challenge;
 }

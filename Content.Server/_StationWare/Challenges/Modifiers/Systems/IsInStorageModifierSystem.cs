@@ -1,4 +1,4 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Robust.Server.Containers;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
@@ -6,10 +6,10 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 /// <summary>
 /// This handles checking all players whether they're inside of an entity storage.
 /// </summary>
-public sealed class IsInsideStorageModifierSystem : EntitySystem
+public sealed partial class IsInsideStorageModifierSystem : EntitySystem
 {
-    [Dependency] private readonly ContainerSystem _containerSystem = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWare = default!;
+    [Dependency] private ContainerSystem _containerSystem = default!;
+    [Dependency] private StationWareChallengeSystem _stationWare = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

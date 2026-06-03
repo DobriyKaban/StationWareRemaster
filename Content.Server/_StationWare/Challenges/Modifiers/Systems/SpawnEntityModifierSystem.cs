@@ -1,6 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Server.Atmos.EntitySystems;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Physics;
 using Content.Shared.Storage;
 using Robust.Shared.Map;
@@ -12,11 +13,12 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class SpawnEntityModifierSystem : EntitySystem
+public sealed partial class SpawnEntityModifierSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private AtmosphereSystem _atmosphere = default!;
+    [Dependency] private SharedMapSystem _mapSystem = default!;
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -81,7 +83,7 @@ public sealed class SpawnEntityModifierSystem : EntitySystem
             var tile = new Vector2i(randomX, randomY);
 
             // no air-blocked areas.
-            if (_atmosphere.IsTileSpace(grid, xform.MapUid, tile, mapGridComp: mapGridComp) ||
+            if (_atmosphere.IsTileSpace(grid, xform.MapUid, tile) ||
                 _atmosphere.IsTileAirBlocked(grid, tile, mapGridComp: mapGridComp))
             {
                 continue;
@@ -91,7 +93,7 @@ public sealed class SpawnEntityModifierSystem : EntitySystem
             var physQuery = GetEntityQuery<PhysicsComponent>();
             var markerQuery = GetEntityQuery<SpawnBlockMarkerComponent>();
             var valid = true;
-            foreach (var ent in mapGridComp.GetAnchoredEntities(tile))
+            foreach (var ent in _mapSystem.GetAnchoredEntities(grid, mapGridComp, tile))
             {
                 if (markerQuery.HasComponent(ent))
                 {
@@ -112,7 +114,7 @@ public sealed class SpawnEntityModifierSystem : EntitySystem
             if (!valid)
                 continue;
 
-            return mapGridComp.GridTileToLocal(tile);
+            return _mapSystem.GridTileToLocal(grid, mapGridComp, tile);
         }
         return xform.Coordinates;
     }

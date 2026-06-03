@@ -6,13 +6,13 @@
 /// will make you win.
 /// </summary>
 [RegisterComponent]
-public sealed class ControlPointComponent : Component
+public sealed partial class ControlPointComponent : Component
 {
 
 }
 
 [RegisterComponent]
-public sealed class ControlPointModifierComponent : Component
+public sealed partial class ControlPointModifierComponent : Component
 {
 
 }

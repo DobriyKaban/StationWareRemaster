@@ -1,11 +1,12 @@
-﻿using Content.Server._StationWare.Challenges.Modifiers.Components;
+using System.Numerics;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Robust.Shared.Physics.Components;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class KeepMovingModifierSystem : EntitySystem
+public sealed partial class KeepMovingModifierSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

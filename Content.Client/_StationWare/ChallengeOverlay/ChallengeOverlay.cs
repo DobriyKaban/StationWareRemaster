@@ -1,10 +1,12 @@
-﻿using Content.Client._StationWare.Points;
+using Content.Client._StationWare.Points;
 using Content.Shared._StationWare.Points;
+using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
+
 
 namespace Content.Client._StationWare.ChallengeOverlay;
 
@@ -18,6 +20,7 @@ internal sealed class ChallengeOverlay : Overlay
     private readonly ShaderInstance _shader;
     private readonly Font _font;
     private readonly Font _smallFont;
+    private static readonly ProtoId<ShaderPrototype> UnshadedShaderId = "unshaded";
 
     public ChallengeOverlay(IEntityManager entity, IPrototypeManager proto, IResourceCache resourceCache, IEyeManager eyeManager, IPlayerManager player)
     {
@@ -27,7 +30,7 @@ internal sealed class ChallengeOverlay : Overlay
         _point = entity.System<PointSystem>();
 
         ZIndex = 200;
-        _shader = proto.Index<ShaderPrototype>("unshaded").Instance();
+        _shader = proto.Index(UnshadedShaderId).Instance();
         _smallFont = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/warioware-inc/warioware-inc.ttf"), 6);
         _font = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/warioware-inc/warioware-inc.ttf"), 10);
     }
@@ -70,7 +73,7 @@ internal sealed class ChallengeOverlay : Overlay
 
         // update the point count
         var local = _playerMgr.LocalPlayer?.UserId;
-        PointManagerComponent? manager = null;
+        StationWarePointManagerComponent? manager = null;
         if (local != null && _point.TryGetPointManager(ref manager))
         {
             var points = _point.GetPoints(local, manager);

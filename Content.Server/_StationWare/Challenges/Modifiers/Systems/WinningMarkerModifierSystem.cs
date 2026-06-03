@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server._StationWare.Challenges.Modifiers.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Weapons.Melee.Events;
@@ -6,11 +6,11 @@ using Robust.Server.GameObjects;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Systems;
 
-public sealed class WinningMarkerModifierSystem : EntitySystem
+public sealed partial class WinningMarkerModifierSystem : EntitySystem
 {
-    [Dependency] private readonly IComponentFactory _componentFactory = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private IComponentFactory _componentFactory = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -31,7 +31,7 @@ public sealed class WinningMarkerModifierSystem : EntitySystem
             var winning = _componentFactory.GetComponent<WinningMarkerComponent>();
             winning.Challenge = uid;
             winning.Owner = player;
-            EntityManager.AddComponent(player, winning);
+            AddComp(player, winning);
         }
     }
 
@@ -83,7 +83,7 @@ public sealed class WinningMarkerModifierSystem : EntitySystem
         var winning = _componentFactory.GetComponent<WinningMarkerComponent>();
         winning.Challenge = component.Challenge;
         winning.Owner = user;
-        EntityManager.AddComponent(user, winning);
+        AddComp(user, winning);
         RemComp(uid, component);
 
     }

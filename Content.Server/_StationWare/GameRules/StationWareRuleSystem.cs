@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._StationWare.ChallengeOverlay;
 using Content.Server._StationWare.Challenges;
@@ -12,10 +12,12 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Hands.Systems;
 using Content.Shared.CombatMode;
+using Content.Shared.GameTicking.Components;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Mobs;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
+using Robust.Shared.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -23,20 +25,21 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._StationWare.GameRules;
 
-public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleComponent>
+public sealed partial class StationWareRuleSystem : GameRuleSystem<StationWareRuleComponent>
 {
-    [Dependency] private readonly IChatManager _chatManager = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly CombatModeSystem _combatMode = default!;
-    [Dependency] private readonly GodmodeSystem _godmode = default!;
-    [Dependency] private readonly HandsSystem _hands = default!;
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
-    [Dependency] private readonly ChallengeOverlaySystem _overlay = default!;
-    [Dependency] private readonly PointSystem _point = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
+    [Dependency] private IChatManager _chatManager = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private CombatModeSystem _combatMode = default!;
+    [Dependency] private GodmodeSystem _godmode = default!;
+    [Dependency] private HandsSystem _hands = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private ChallengeOverlaySystem _overlay = default!;
+    [Dependency] private PointSystem _point = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+
+    private static readonly ProtoId<ChallengePrototype> TiebreakerChallengeId = "TiebreakerChallenge";
 
     public override void Initialize()
     {
@@ -44,7 +47,6 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
 
         SubscribeLocalEvent<ChallengeEndEvent>(OnChallengeEnd);
         SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
-        SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
 
         _overlay.BroadcastText("", false, Color.Green);
     }
@@ -78,7 +80,7 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
                         }
                     }
 
-                    _stationWareChallenge.StartChallenge(_prototype.Index<ChallengePrototype>("TiebreakerChallenge"));
+                    _stationWareChallenge.StartChallenge(_prototype.Index(TiebreakerChallengeId));
                 }
                 else
                 {
@@ -141,23 +143,16 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
         }
     }
 
-    private void OnRoundEndText(RoundEndTextAppendEvent ev)
+    protected override void AppendRoundEndText(EntityUid uid, StationWareRuleComponent component, GameRuleComponent gameRule, ref RoundEndTextAppendEvent args)
     {
-        var query = EntityQueryEnumerator<StationWareRuleComponent, GameRuleComponent>();
-        while (query.MoveNext(out var uid, out _, out var rule))
-        {
-            if (!GameTicker.IsGameRuleActive(uid, rule))
-                return;
+        args.AddLine(_point.GetPointScoreBoard().ToMarkup());
 
-            ev.AddLine(_point.GetPointScoreBoard().ToMarkup());
-
-            if (!_point.TryGetHighestScoringPlayer(null, out var pair))
-                return;
-            var info = pair.Value.Value;
-            ev.AddLine(Loc.GetString("stationware-report-winner",
-                ("name", info.Name),
-                ("points", info.Points)));
-        }
+        if (!_point.TryGetHighestScoringPlayer(null, out var pair))
+            return;
+        var info = pair.Value.Value;
+        args.AddLine(Loc.GetString("stationware-report-winner",
+            ("name", info.Name),
+            ("points", info.Points)));
     }
 
     protected override void Started(EntityUid uid, StationWareRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
@@ -225,10 +220,10 @@ public sealed class StationWareRuleSystem : GameRuleSystem<StationWareRuleCompon
 
     private void StartPostRoundSlaughter(List<NetUserId> ids)
     {
-        Dictionary<NetUserId, (IPlayerSession, EntityUid)> players = new();
+        Dictionary<NetUserId, (ICommonSession, EntityUid)> players = new();
         foreach (var id in ids)
         {
-            if (_player.TryGetSessionById(id, out var session) && session.AttachedEntity is { } attachedEntity)
+            if (_playerManager.TryGetSessionById(id, out var session) && session.AttachedEntity is { } attachedEntity)
                 players.Add(id, (session, attachedEntity));
         }
 

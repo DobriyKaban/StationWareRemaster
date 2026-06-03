@@ -4,13 +4,13 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// This is used for the tiebreaker challenge
 /// </summary>
 [RegisterComponent]
-public sealed class TiebreakerModifierComponent : Component
+public sealed partial class TiebreakerModifierComponent : Component
 {
 
 }
 
 [RegisterComponent]
-public sealed class TiebreakerTrackerComponent : Component
+public sealed partial class TiebreakerTrackerComponent : Component
 {
     /// <summary>
     /// The challenge entity for the tiebreaker

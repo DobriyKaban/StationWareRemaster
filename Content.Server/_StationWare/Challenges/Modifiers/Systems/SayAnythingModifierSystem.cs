@@ -1,17 +1,17 @@
-﻿using Content.Server.Chat.Systems;
+using Content.Server.Chat.Systems;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
-public sealed class SayAnythingModifierSystem : EntitySystem
+public sealed partial class SayAnythingModifierSystem : EntitySystem
 {
-    [Dependency] private readonly StationWareChallengeSystem _stationWareChallenge = default!;
+    [Dependency] private StationWareChallengeSystem _stationWareChallenge = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
         SubscribeLocalEvent<SayAnythingModifierComponent, ChallengeStartEvent>(OnChallengeStart);
         SubscribeLocalEvent<SayAnythingPlayerComponent, PlayerChallengeStateSetEvent>(OnChallengeStateSet);
-        SubscribeLocalEvent<SayAnythingPlayerComponent, EntitySpokeEvent>(OnTransformSpeech);
+        SubscribeLocalEvent<SayAnythingPlayerComponent, Content.Shared.Chat.EntitySpokeEvent>(OnTransformSpeech);
     }
 
     private void OnChallengeStart(EntityUid uid, SayAnythingModifierComponent component, ref ChallengeStartEvent args)
@@ -27,7 +27,7 @@ public sealed class SayAnythingModifierSystem : EntitySystem
         RemComp(uid, component);
     }
 
-    private void OnTransformSpeech(EntityUid uid, SayAnythingPlayerComponent component, EntitySpokeEvent args)
+    private void OnTransformSpeech(EntityUid uid, SayAnythingPlayerComponent component, Content.Shared.Chat.EntitySpokeEvent args)
     {
         if (!TryComp<SayAnythingModifierComponent>(component.Challenge, out var modifier))
             return;

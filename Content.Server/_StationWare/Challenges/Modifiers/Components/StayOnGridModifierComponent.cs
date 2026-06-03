@@ -5,12 +5,12 @@
 /// to win the challenge. There's technically ways to cheese this but idgaf
 /// </summary>
 [RegisterComponent]
-public sealed class StayOnGridModifierComponent : Component
+public sealed partial class StayOnGridModifierComponent : Component
 {
 }
 
 [RegisterComponent]
-public sealed class StayOnGridTrackerComponent : Component
+public sealed partial class StayOnGridTrackerComponent : Component
 {
     /// <summary>
     /// The challenge this tracker is registered to.

@@ -144,6 +144,8 @@
     groups:
       Flammable: [ Touch ]
       Extinguish: [ Touch ]
+      # StationWare edit - Acidic reaction
+      Acidic: [ Touch, Ingestion ]
     reactions:
     - reagents: [ Water, SpaceCleaner ]
       methods: [ Touch ]

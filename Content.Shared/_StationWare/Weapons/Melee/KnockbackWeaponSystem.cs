@@ -1,11 +1,13 @@
-﻿using Content.Shared.Throwing;
+using Content.Shared.Throwing;
 using Content.Shared.Weapons.Melee.Events;
+using System.Numerics;
+using Robust.Shared.Maths;
 
 namespace Content.Shared._StationWare.Weapons.Melee;
 
-public sealed class KnockbackWeaponSystem : EntitySystem
+public sealed partial class KnockbackWeaponSystem : EntitySystem
 {
-    [Dependency] private readonly ThrowingSystem _throwing = default!;
+    [Dependency] private ThrowingSystem _throwing = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -23,9 +25,9 @@ public sealed class KnockbackWeaponSystem : EntitySystem
         {
             var hitXForm = Transform(hit);
             var direction = hitXForm.MapPosition.Position - userXForm.MapPosition.Position;
-            direction = direction.Normalized * component.Distance;
-            if (direction == Vector2.NaN)
+            if (direction == Vector2.Zero)
                 continue;
+            direction = direction.Normalized() * component.Distance;
             _throwing.TryThrow(hit, direction, component.Strength, args.User);
         }
     }

@@ -4,7 +4,7 @@ namespace Content.Server.Destructible.Thresholds.Behaviors
 {
     [Serializable]
     [DataDefinition]
-    public sealed class SetChallengeState : IThresholdBehavior
+    public sealed partial class SetChallengeState : IThresholdBehavior
     {
         [DataField("win")]
         public bool Win = true;

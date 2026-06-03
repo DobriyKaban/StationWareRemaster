@@ -1,23 +1,23 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._StationWare.ChallengeOverlay;
 using JetBrains.Annotations;
 using Robust.Shared.Network;
-using Robust.Shared.Players;
+using Robust.Shared.Player;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._StationWare.Points;
 
-public abstract class SharedPointSystem : EntitySystem
+public abstract partial class SharedPointSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedPlayerManager _player = default!;
-    [Dependency] private readonly SharedChallengeOverlaySystem _challengeOverlay = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private SharedChallengeOverlaySystem _challengeOverlay = default!;
 
-    public abstract bool TryGetPointManager([NotNullWhen(true)] ref PointManagerComponent? component);
+    public abstract bool TryGetPointManager([NotNullWhen(true)] ref StationWarePointManagerComponent? component);
 
     #region GetPoints
     [PublicAPI]
-    public int GetPoints(EntityUid? uid, PointManagerComponent? component = null)
+    public int GetPoints(EntityUid? uid, StationWarePointManagerComponent? component = null)
     {
         if (uid == null)
             return 0;
@@ -27,12 +27,12 @@ public abstract class SharedPointSystem : EntitySystem
     }
 
     [PublicAPI]
-    public int GetPoints(ICommonSession? session, PointManagerComponent? component = null)
+    public int GetPoints(ICommonSession? session, StationWarePointManagerComponent? component = null)
     {
         return GetPoints(session?.UserId, component);
     }
 
-    public int GetPoints(NetUserId? id, PointManagerComponent? component = null)
+    public int GetPoints(NetUserId? id, StationWarePointManagerComponent? component = null)
     {
         if (id == null || !TryGetPointManager(ref component))
             return 0;
@@ -43,7 +43,7 @@ public abstract class SharedPointSystem : EntitySystem
     #endregion
 
     [PublicAPI]
-    public void SetPoints(NetUserId id, int value, PointManagerComponent? component = null)
+    public void SetPoints(NetUserId id, int value, StationWarePointManagerComponent? component = null)
     {
         if (!TryGetPointManager(ref component))
             return;
@@ -51,18 +51,18 @@ public abstract class SharedPointSystem : EntitySystem
         if (!TryGetPointInfo(id, component, out var info))
             return;
         info.Points = value;
-        Dirty(component);
+        Dirty(component.Owner, component);
         _challengeOverlay.BroadcastText(string.Empty, false, Color.Black, id);
     }
 
     [PublicAPI]
-    public void AdjustPoints(ICommonSession session, int delta, PointManagerComponent? component = null)
+    public void AdjustPoints(ICommonSession session, int delta, StationWarePointManagerComponent? component = null)
     {
         AdjustPoints(session.UserId, delta, component);
     }
 
     [PublicAPI]
-    public void AdjustPoints(NetUserId id, int delta, PointManagerComponent? component = null)
+    public void AdjustPoints(NetUserId id, int delta, StationWarePointManagerComponent? component = null)
     {
         if (!TryGetPointManager(ref component))
             return;
@@ -70,7 +70,7 @@ public abstract class SharedPointSystem : EntitySystem
         if (!TryGetPointInfo(id, component, out var info))
             return;
         info.Points += delta;
-        Dirty(component);
+        Dirty(component.Owner, component);
         _challengeOverlay.BroadcastText(string.Empty, false, Color.Black, id);
     }
 
@@ -79,7 +79,7 @@ public abstract class SharedPointSystem : EntitySystem
     /// Creates a new one if it doesn't exist.
     /// </summary>
     [PublicAPI]
-    public bool TryGetPointInfo(EntityUid uid, PointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
+    public bool TryGetPointInfo(EntityUid uid, StationWarePointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
     {
         info = null;
         if (!_player.TryGetSessionByEntity(uid, out var session))
@@ -92,7 +92,7 @@ public abstract class SharedPointSystem : EntitySystem
     /// Creates a new one if it doesn't exist.
     /// </summary>
     [PublicAPI]
-    public bool TryGetPointInfo(ICommonSession session, PointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
+    public bool TryGetPointInfo(ICommonSession session, StationWarePointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
     {
         return TryGetPointInfo(session.UserId, component, out info);
     }
@@ -101,7 +101,7 @@ public abstract class SharedPointSystem : EntitySystem
     /// Gets the pointinfo class for a specified NetUserId.
     /// Creates a new one if it doesn't exist.
     /// </summary>
-    public bool TryGetPointInfo(NetUserId id, PointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
+    public bool TryGetPointInfo(NetUserId id, StationWarePointManagerComponent? component, [NotNullWhen(true)] out PointInfo? info)
     {
         info = null;
         if (!TryGetPointManager(ref component))
@@ -112,12 +112,12 @@ public abstract class SharedPointSystem : EntitySystem
         return true;
     }
 
-    protected void EnsurePointInfo(PointManagerComponent? component, ICommonSession session)
+    protected void EnsurePointInfo(StationWarePointManagerComponent? component, ICommonSession session)
     {
         EnsurePointInfo(component, session.UserId);
     }
 
-    protected void EnsurePointInfo(PointManagerComponent? component, NetUserId id)
+    protected void EnsurePointInfo(StationWarePointManagerComponent? component, NetUserId id)
     {
         if (!TryGetPointManager(ref component))
             return;
@@ -128,10 +128,10 @@ public abstract class SharedPointSystem : EntitySystem
         var valid = _player.Sessions.Where(s => s.UserId == id);
         var name = valid.FirstOrDefault()?.Name ?? "???";
         component.Points[id] = new PointInfo(name);
-        Dirty(component);
+        Dirty(component.Owner, component);
     }
 
-    public bool TryGetHighestScoringPlayer(PointManagerComponent? component, [NotNullWhen(true)] out KeyValuePair<NetUserId, PointInfo>? highest)
+    public bool TryGetHighestScoringPlayer(StationWarePointManagerComponent? component, [NotNullWhen(true)] out KeyValuePair<NetUserId, PointInfo>? highest)
     {
         highest = null;
         if (!TryGetPointManager(ref component))
@@ -143,7 +143,7 @@ public abstract class SharedPointSystem : EntitySystem
         return true;
     }
 
-    public bool TryGetTiedPlayers(PointManagerComponent? component, [NotNullWhen(true)] out List<NetUserId>? tiedPlayers)
+    public bool TryGetTiedPlayers(StationWarePointManagerComponent? component, [NotNullWhen(true)] out List<NetUserId>? tiedPlayers)
     {
         tiedPlayers = null;
         if (!TryGetPointManager(ref component))
@@ -180,7 +180,7 @@ public abstract class SharedPointSystem : EntitySystem
     /// </summary>
     /// <param name="component"></param>
     /// <returns></returns>
-    public FormattedMessage GetPointScoreBoard(PointManagerComponent? component = null)
+    public FormattedMessage GetPointScoreBoard(StationWarePointManagerComponent? component = null)
     {
         var msg = new FormattedMessage();
         if (!TryGetPointManager(ref component))

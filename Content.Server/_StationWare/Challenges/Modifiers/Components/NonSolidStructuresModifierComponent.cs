@@ -8,7 +8,7 @@ namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 /// This is used for making all structures non-solid during a challenge.
 /// </summary>
 [RegisterComponent]
-public sealed class NonSolidStructuresModifierComponent : Component
+public sealed partial class NonSolidStructuresModifierComponent : Component
 {
     [DataField("targetTag", customTypeSerializer: typeof(PrototypeIdSerializer<TagPrototype>))]
     public string TargetTag = "Structure";

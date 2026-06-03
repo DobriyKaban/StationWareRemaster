@@ -1,9 +1,10 @@
-﻿using Robust.Server.Player;
+using Robust.Server.Player;
+using Robust.Shared.Player;
 
 namespace Content.Server._StationWare.GameRules;
 
 [RegisterComponent]
-public sealed class StationWareRuleComponent : Component
+public sealed partial class StationWareRuleComponent : Component
 {
     //todo you lazy fuck go make this proper
     public TimeSpan NextChallengeTime;
@@ -21,5 +22,5 @@ public sealed class StationWareRuleComponent : Component
 
     public float SpeedMultiplier = 1f;
 
-    public readonly HashSet<IPlayerSession> QueuedRespawns = new();
+    public readonly HashSet<ICommonSession> QueuedRespawns = new();
 }

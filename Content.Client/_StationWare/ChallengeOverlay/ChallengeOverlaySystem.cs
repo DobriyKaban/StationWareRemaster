@@ -1,4 +1,4 @@
-﻿using Content.Shared._StationWare.ChallengeOverlay;
+using Content.Shared._StationWare.ChallengeOverlay;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Client.ResourceManagement;
@@ -7,13 +7,13 @@ using Robust.Shared.Prototypes;
 namespace Content.Client._StationWare.ChallengeOverlay;
 
 /// <inheritdoc/>
-public sealed class ChallengeOverlaySystem : SharedChallengeOverlaySystem
+public sealed partial class ChallengeOverlaySystem : SharedChallengeOverlaySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IResourceCache _resourceCache = default!;
-    [Dependency] private readonly IOverlayManager _overlayManager = default!;
-    [Dependency] private readonly IEyeManager _eyeManager = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private IResourceCache _resourceCache = default!;
+    [Dependency] private IOverlayManager _overlayManager = default!;
+    [Dependency] private IEyeManager _eyeManager = default!;
 
     private ChallengeOverlay _challengeOverlay = default!;
 

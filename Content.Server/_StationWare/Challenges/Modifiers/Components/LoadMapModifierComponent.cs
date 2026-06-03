@@ -1,16 +1,16 @@
-﻿using Robust.Shared.Map;
+using Robust.Shared.Map;
 using Robust.Shared.Utility;
 
 namespace Content.Server._StationWare.Challenges.Modifiers.Components;
 
 [RegisterComponent]
-public sealed class LoadMapModifierComponent : Component
+public sealed partial class LoadMapModifierComponent : Component
 {
     /// <summary>
     /// Relative directory path to the given map, i.e. `Maps/ChallengeMaps/map-test.yml`
     /// </summary>
     [DataField("mapPath", required: true)]
-    public ResPath MapPath { get; } = default!;
+    public ResPath MapPath { get; set; } = default!;
 
     /// <summary>
     /// The map created by the modifier
@@ -19,7 +19,7 @@ public sealed class LoadMapModifierComponent : Component
 }
 
 [RegisterComponent]
-public sealed class MapPlayerSpawnerComponent : Component
+public sealed partial class MapPlayerSpawnerComponent : Component
 {
 
 }

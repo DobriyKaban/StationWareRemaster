@@ -1,62 +1,53 @@
 using System.Linq;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
-using Content.Shared.Hands.Components;
+using Content.Shared.Gravity;
 using Content.Shared.Physics;
-using Content.Shared.Physics.Pull;
-using Robust.Shared.Containers;
-using Robust.Shared.GameStates;
+using Content.Shared.Movement.Pulling.Events;
+using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Throwing
 {
     /// <summary>
     ///     Handles throwing landing and collisions.
     /// </summary>
-    public sealed class ThrownItemSystem : EntitySystem
+    public sealed partial class ThrownItemSystem : EntitySystem
     {
-        [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly SharedBroadphaseSystem _broadphase = default!;
-        [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-        [Dependency] private readonly FixtureSystem _fixtures = default!;
-        [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+        [Dependency] private IGameTiming _gameTiming = default!;
+        [Dependency] private INetManager _netMan = default!;
+        [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+        [Dependency] private FixtureSystem _fixtures = default!;
+        [Dependency] private SharedBroadphaseSystem _broadphase = default!;
+        [Dependency] private SharedPhysicsSystem _physics = default!;
+        [Dependency] private SharedGravitySystem _gravity = default!;
 
         private const string ThrowingFixture = "throw-fixture";
 
         public override void Initialize()
         {
             base.Initialize();
+            SubscribeLocalEvent<ThrownItemComponent, MapInitEvent>(OnMapInit);
             SubscribeLocalEvent<ThrownItemComponent, PhysicsSleepEvent>(OnSleep);
             SubscribeLocalEvent<ThrownItemComponent, StartCollideEvent>(HandleCollision);
             SubscribeLocalEvent<ThrownItemComponent, PreventCollideEvent>(PreventCollision);
             SubscribeLocalEvent<ThrownItemComponent, ThrownEvent>(ThrowItem);
-            SubscribeLocalEvent<ThrownItemComponent, ComponentGetState>(OnGetState);
-            SubscribeLocalEvent<ThrownItemComponent, ComponentHandleState>(OnHandleState);
+
             SubscribeLocalEvent<PullStartedMessage>(HandlePullStarted);
         }
 
-        private void OnGetState(EntityUid uid, ThrownItemComponent component, ref ComponentGetState args)
+        private void OnMapInit(EntityUid uid, ThrownItemComponent component, MapInitEvent args)
         {
-            args.State = new ThrownItemComponentState(component.Thrower);
+            component.ThrownTime ??= _gameTiming.CurTime;
         }
 
-        private void OnHandleState(EntityUid uid, ThrownItemComponent component, ref ComponentHandleState args)
+        private void ThrowItem(EntityUid uid, ThrownItemComponent component, ref ThrownEvent @event)
         {
-            if (args.Current is not ThrownItemComponentState {Thrower: not null } state ||
-                !state.Thrower.Value.IsValid())
-            {
-                return;
-            }
-
-            component.Thrower = state.Thrower.Value;
-        }
-
-        private void ThrowItem(EntityUid uid, ThrownItemComponent component, ThrownEvent args)
-        {
-            if (!EntityManager.TryGetComponent(uid, out FixturesComponent? fixturesComponent) ||
+            if (!TryComp(uid, out FixturesComponent? fixturesComponent) ||
                 fixturesComponent.Fixtures.Count != 1 ||
                 !TryComp<PhysicsComponent>(uid, out var body))
             {
@@ -70,19 +61,18 @@ namespace Content.Shared.Throwing
 
         private void HandleCollision(EntityUid uid, ThrownItemComponent component, ref StartCollideEvent args)
         {
-            if (args.OtherFixture.Hard == false)
+            if (!args.OtherFixture.Hard)
                 return;
 
-            var thrower = component.Thrower;
-            if (args.OtherEntity == thrower)
+            if (args.OtherEntity == component.Thrower)
                 return;
 
-            ThrowCollideInteraction(thrower, args.OurBody, args.OtherBody);
+            ThrowCollideInteraction(component, args.OurEntity, args.OtherEntity);
         }
 
         private void PreventCollision(EntityUid uid, ThrownItemComponent component, ref PreventCollideEvent args)
         {
-            if (args.OtherBody.Owner == component.Thrower)
+            if (args.OtherEntity == component.Thrower)
             {
                 args.Cancelled = true;
             }
@@ -96,63 +86,88 @@ namespace Content.Shared.Throwing
         private void HandlePullStarted(PullStartedMessage message)
         {
             // TODO: this isn't directed so things have to be done the bad way
-            if (EntityManager.TryGetComponent(message.Pulled.Owner, out ThrownItemComponent? thrownItemComponent))
-                StopThrow(message.Pulled.Owner, thrownItemComponent);
+            if (TryComp(message.PulledUid, out ThrownItemComponent? thrownItemComponent))
+                StopThrow(message.PulledUid, thrownItemComponent);
         }
 
-        private void StopThrow(EntityUid uid, ThrownItemComponent thrownItemComponent)
+        public void StopThrow(EntityUid uid, ThrownItemComponent thrownItemComponent)
         {
-            if (EntityManager.TryGetComponent(uid, out FixturesComponent? manager))
+            if (TryComp<PhysicsComponent>(uid, out var physics))
+            {
+                _physics.SetBodyStatus(uid, physics, BodyStatus.OnGround);
+
+                if (physics.Awake)
+                    _broadphase.RegenerateContacts((uid, physics));
+            }
+
+            if (TryComp(uid, out FixturesComponent? manager))
             {
                 var fixture = _fixtures.GetFixtureOrNull(uid, ThrowingFixture, manager: manager);
 
                 if (fixture != null)
                 {
-                    _fixtures.DestroyFixture(uid, fixture, manager: manager);
+                    _fixtures.DestroyFixture(uid, ThrowingFixture, fixture, manager: manager);
                 }
             }
 
-            EntityManager.EventBus.RaiseLocalEvent(uid, new StopThrowEvent {User = thrownItemComponent.Thrower}, true);
-            EntityManager.RemoveComponent<ThrownItemComponent>(uid);
+            var ev = new StopThrowEvent(thrownItemComponent.Thrower);
+            RaiseLocalEvent(uid, ref ev);
+            RemComp<ThrownItemComponent>(uid);
         }
 
         public void LandComponent(EntityUid uid, ThrownItemComponent thrownItem, PhysicsComponent physics, bool playSound)
         {
-            _physics.SetBodyStatus(physics, BodyStatus.OnGround);
-
-            if (thrownItem.Deleted || Deleted(uid) || _containerSystem.IsEntityInContainer(uid))
+            if (thrownItem.Landed || thrownItem.Deleted || _gravity.IsWeightless(uid) || Deleted(uid))
                 return;
 
-            var landing = uid;
-
-            // Unfortunately we can't check for hands containers as they have specific names.
-            if (uid.TryGetContainerMan(out var containerManager) &&
-                EntityManager.HasComponent<HandsComponent>(containerManager.Owner))
-            {
-                EntityManager.RemoveComponent(landing, thrownItem);
-                return;
-            }
+            thrownItem.Landed = true;
 
             // Assume it's uninteresting if it has no thrower. For now anyway.
             if (thrownItem.Thrower is not null)
-                _adminLogger.Add(LogType.Landed, LogImpact.Low, $"{ToPrettyString(landing):entity} thrown by {ToPrettyString(thrownItem.Thrower.Value):thrower} landed.");
+                _adminLogger.Add(LogType.Landed, LogImpact.Low, $"{ToPrettyString(uid):entity} thrown by {ToPrettyString(thrownItem.Thrower.Value):thrower} landed.");
 
-            _broadphase.RegenerateContacts(uid, physics);
+            _broadphase.RegenerateContacts((uid, physics));
             var landEvent = new LandEvent(thrownItem.Thrower, playSound);
-            RaiseLocalEvent(landing, ref landEvent);
+            RaiseLocalEvent(uid, ref landEvent);
         }
 
         /// <summary>
         ///     Raises collision events on the thrown and target entities.
         /// </summary>
-        public void ThrowCollideInteraction(EntityUid? user, PhysicsComponent thrown, PhysicsComponent target)
+        public void ThrowCollideInteraction(ThrownItemComponent component, EntityUid thrown, EntityUid target)
         {
-            if (user is not null)
+            if (component.Thrower is not null)
                 _adminLogger.Add(LogType.ThrowHit, LogImpact.Low,
-                    $"{ToPrettyString(thrown.Owner):thrown} thrown by {ToPrettyString(user.Value):thrower} hit {ToPrettyString(target.Owner):target}.");
-            // TODO: Just pass in the bodies directly
-            RaiseLocalEvent(target.Owner, new ThrowHitByEvent(user, thrown.Owner, target.Owner), true);
-            RaiseLocalEvent(thrown.Owner, new ThrowDoHitEvent(user, thrown.Owner, target.Owner), true);
+                    $"{ToPrettyString(thrown):thrown} thrown by {ToPrettyString(component.Thrower.Value):thrower} hit {ToPrettyString(target):target}.");
+
+            var hitByEv = new ThrowHitByEvent(thrown, target, component);
+            var doHitEv = new ThrowDoHitEvent(thrown, target, component);
+            RaiseLocalEvent(target, ref hitByEv, true);
+            RaiseLocalEvent(thrown, ref doHitEv, true);
+        }
+
+        public override void Update(float frameTime)
+        {
+            base.Update(frameTime);
+
+            var query = EntityQueryEnumerator<ThrownItemComponent, PhysicsComponent>();
+            while (query.MoveNext(out var uid, out var thrown, out var physics))
+            {
+                // If you remove this check verify slipping for other entities is networked properly.
+                if (_netMan.IsClient && !physics.Predict)
+                    continue;
+
+                if (thrown.LandTime <= _gameTiming.CurTime)
+                {
+                    LandComponent(uid, thrown, physics, thrown.PlayLandSound);
+                }
+
+                var stopThrowTime = thrown.LandTime ?? thrown.ThrownTime;
+                if (stopThrowTime <= _gameTiming.CurTime)
+                {
+                    StopThrow(uid, thrown);
+                }
+            }
         }
     }
 }
