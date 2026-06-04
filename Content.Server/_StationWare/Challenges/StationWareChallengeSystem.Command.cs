@@ -1,5 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server.Administration;
+using Content.Server._StationWare.GameRules;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
 
@@ -17,9 +18,37 @@ public sealed partial class StationWareChallengeSystem
         }
 
         if (!_prototype.TryIndex<ChallengePrototype>(args[0], out var wareEvent))
+        {
+            shell.WriteError($"Challenge prototype '{args[0]}' not found.");
             return;
+        }
 
-        StartChallenge(wareEvent);
+        var ruleQuery = EntityQueryEnumerator<StationWareRuleComponent>();
+        if (!ruleQuery.MoveNext(out _, out _))
+        {
+            shell.WriteLine("StationWare game rule is not active. Starting it now...");
+            var ruleId = "StationWare";
+            _gameTicker.StartGameRule(ruleId);
+        }
+
+        ruleQuery = EntityQueryEnumerator<StationWareRuleComponent>();
+        if (ruleQuery.MoveNext(out var ruleUid, out var wareRule))
+        {
+            if (wareRule.CurrentChallenge != null)
+            {
+                shell.WriteLine("Ending active challenge...");
+                EndChallenge(wareRule.CurrentChallenge.Value);
+            }
+
+            var challengeUid = StartChallenge(wareEvent);
+            wareRule.CurrentChallenge = challengeUid;
+            shell.WriteLine($"Successfully started challenge: {args[0]}");
+        }
+        else
+        {
+            shell.WriteError("Failed to start/find StationWare game rule, starting challenge standalone...");
+            StartChallenge(wareEvent);
+        }
     }
 
     private CompletionResult StartChallengeCommandCompletions(IConsoleShell shell, string[] args)

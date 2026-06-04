@@ -54,6 +54,8 @@ entities:
       forceEnabled: True
       enabled: True
       type: Gravity
+    - id: Stationware
+      type: BecomesStation
     - chunkCollection:
         version: 2
         nodes:
@@ -775,6 +777,55 @@ entities:
     components:
     - rot: -1.5707963267948966 rad
       pos: 5.5,3.5
+      parent: 2
+      type: Transform
+- proto: SpawnPointLatejoin
+  entities:
+  - uid: 1000
+    components:
+    - pos: 0.5,0.5
+      parent: 2
+      type: Transform
+  - uid: 1001
+    components:
+    - pos: -0.5,-0.5
+      parent: 2
+      type: Transform
+  - uid: 1002
+    components:
+    - pos: 0.5,-0.5
+      parent: 2
+      type: Transform
+  - uid: 1003
+    components:
+    - pos: -0.5,0.5
+      parent: 2
+      type: Transform
+  - uid: 1004
+    components:
+    - pos: 1.5,1.5
+      parent: 2
+      type: Transform
+  - uid: 1005
+    components:
+    - pos: -1.5,-1.5
+      parent: 2
+      type: Transform
+  - uid: 1006
+    components:
+    - pos: 1.5,-1.5
+      parent: 2
+      type: Transform
+  - uid: 1007
+    components:
+    - pos: -1.5,1.5
+      parent: 2
+      type: Transform
+- proto: GravityGeneratorMini
+  entities:
+  - uid: 1008
+    components:
+    - pos: 0.5,0.5
       parent: 2
       type: Transform
 ...

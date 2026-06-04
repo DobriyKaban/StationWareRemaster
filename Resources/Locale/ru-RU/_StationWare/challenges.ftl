@@ -38,3 +38,26 @@ challenge-tiebreaker-message = Тайбрейкер! Убей своего оп�
 # Boss rounds
 challenge-boss-juggernaut-hunter = Убей {$idiot}!
 challenge-boss-juggernaut-juggernaut = Цель: Выжить.
+
+# New Challenges
+challenge-hot-potato = Горячая картошка! Передай её другому ударом!
+challenge-wirecutter-defusal = Обезвредь свою бомбу кусачками!
+challenge-toy-saber-duel = Рыцарский турнир! Выбей остальных игрушечной саблей!
+challenge-portal-roulette = Портальный хаос! Зайди в безопасный портал!
+challenge-sedative-dart-gun = Тихий час! Усыпи остальных и останься на ногах!
+challenge-carp-escape = Вторжение карпов! Выживи среди проголодавшихся карпов!
+
+# Custom modifiers text
+sw-defusal-color-red = красный
+sw-defusal-color-blue = синий
+sw-defusal-color-green = зеленый
+sw-defusal-popup-instruction = ПЕРЕРЕЖЬТЕ {$color} ПРОВОД!
+sw-defusal-verb-cut = Перерезать {$color} провод
+sw-defusal-no-wirecutter = Вам нужны кусачки!
+sw-defusal-bomb-defused = БОМБА ОБЕЗВРЕЖЕНА!
+sw-defusal-bomb-failed = НЕ ТОТ ПРОВОД! БУМ!
+sw-toy-saber-knocked-out = ВЫБИТ ИЗ ТУРНИРА!
+sw-portal-safe = БЕЗОПАСНО!
+sw-portal-failed = БАБАХ!
+sw-sedative-asleep = ЗАСНУЛ!
+

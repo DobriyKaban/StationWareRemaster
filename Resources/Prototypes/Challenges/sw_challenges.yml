@@ -1,0 +1,51 @@
+- type: challenge
+  id: HotPotatoChallenge
+  announcement: challenge-hot-potato
+  winByDefault: true
+  duration: 8
+  challengeModifiers:
+  - type: SWHotPotatoModifier
+    potatoPrototype: HotPotato
+    percentage: 0.3
+
+- type: challenge
+  id: ToySaberDuelChallenge
+  announcement: challenge-toy-saber-duel
+  winByDefault: true
+  duration: 8
+  challengeModifiers:
+  - type: SWToySaberDuelModifier
+    saberPrototype: ToySword
+
+- type: challenge
+  id: PortalRouletteChallenge
+  announcement: challenge-portal-roulette
+  winByDefault: false
+  duration: 8
+  challengeModifiers:
+  - type: SWPortalRouletteModifier
+    portalPrototype: PortalBlue
+
+- type: challenge
+  id: SedativeDartGunChallenge
+  announcement: challenge-sedative-dart-gun
+  winByDefault: true
+  duration: 8
+  challengeModifiers:
+  - type: SWSedativeGunModifier
+    gunPrototype: SWSedativeGun
+
+- type: challenge
+  id: CarpEscapeChallenge
+  announcement: challenge-carp-escape
+  winByDefault: true
+  duration: 8
+  challengeModifiers:
+  - type: StayAliveModifier
+  - type: SpawnEntityModifier
+    spawnLocationScalar: 0.8
+    spawnPerPlayer: true
+    spawnPerPlayerMultiplier: 0.5
+    spawns:
+    - id: MobCarp
+      amount: 100

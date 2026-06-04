@@ -1,0 +1,60 @@
+- type: entity
+  id: SWDefusalBomb
+  name: bomb
+  description: Cut the correct wire to defuse it!
+  components:
+  - type: Transform
+    anchored: True
+  - type: Sprite
+    sprite: Objects/Devices/nuke.rsi
+    layers:
+    - state: nuclearbomb_base
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: Clickable
+  - type: SWDefusalBomb
+
+- type: entity
+  id: SWSedativeGun
+  parent: BaseWeaponBattery
+  name: sedative dart gun
+  description: Fires sleeping darts to put others to sleep.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
+    layers:
+    - state: syringe_gun
+  - type: Gun
+    fireRate: 1.5
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/syringe_gun.ogg
+    clumsyProof: true
+  - type: BatteryAmmoProvider
+    proto: SWSedativeDart
+    fireCost: 10
+  - type: Battery
+    maxCharge: 100
+    startingCharge: 100
+  - type: BatterySelfRecharger
+    autoRechargeRate: 20
+
+- type: entity
+  id: SWSedativeDart
+  parent: BaseBullet
+  name: sleeping dart
+  description: Shh, go to sleep.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
+    layers:
+    - state: omnilaser_greyscale
+      shader: unshaded
+      color: "#4a90e2"
+  - type: Projectile
+    damage:
+      types: {}
+  - type: SWSedativeDart

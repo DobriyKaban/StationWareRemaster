@@ -19,6 +19,14 @@ public abstract partial class SharedHotPotatoSystem : EntitySystem
     [Dependency] private DamageOnHoldingSystem _damageOnHolding = default!;
     [Dependency] private IGameTiming _timing = default!;
 
+    public void SetCanTransfer(EntityUid uid, bool canTransfer, HotPotatoComponent? component = null)
+    {
+        if (!Resolve(uid, ref component, false))
+            return;
+
+        component.CanTransfer = canTransfer;
+        Dirty(uid, component);
+    }
 
     public override void Initialize()
     {

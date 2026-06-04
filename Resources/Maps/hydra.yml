@@ -1024,6 +1024,9 @@ entities:
   - type: GasTileOverlay
   - id: Stationware
     type: BecomesStation
+  - forceEnabled: True
+    enabled: True
+    type: Gravity
 - uid: 1
   components:
   - type: MetaData
@@ -2365,6 +2368,60 @@ entities:
   type: SpawnPointAssistant
   components:
   - pos: -1.5,6.5
+    parent: 0
+    type: Transform
+- uid: 1000
+  type: SpawnPointLatejoin
+  components:
+  - pos: 0.5,0.5
+    parent: 0
+    type: Transform
+- uid: 1001
+  type: SpawnPointLatejoin
+  components:
+  - pos: -0.5,-0.5
+    parent: 0
+    type: Transform
+- uid: 1002
+  type: SpawnPointLatejoin
+  components:
+  - pos: 0.5,-0.5
+    parent: 0
+    type: Transform
+- uid: 1003
+  type: SpawnPointLatejoin
+  components:
+  - pos: -0.5,0.5
+    parent: 0
+    type: Transform
+- uid: 1004
+  type: SpawnPointLatejoin
+  components:
+  - pos: 1.5,1.5
+    parent: 0
+    type: Transform
+- uid: 1005
+  type: SpawnPointLatejoin
+  components:
+  - pos: -1.5,-1.5
+    parent: 0
+    type: Transform
+- uid: 1006
+  type: SpawnPointLatejoin
+  components:
+  - pos: 1.5,-1.5
+    parent: 0
+    type: Transform
+- uid: 1007
+  type: SpawnPointLatejoin
+  components:
+  - pos: -1.5,1.5
+    parent: 0
+    type: Transform
+- uid: 1008
+  type: GravityGeneratorMini
+  components:
+  - pos: 0.5,0.5
     parent: 0
     type: Transform
 ...

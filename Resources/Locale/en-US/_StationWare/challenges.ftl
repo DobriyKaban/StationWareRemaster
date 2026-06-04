@@ -38,3 +38,26 @@ challenge-tiebreaker-message = Tiebreaker, kill your opponent!
 # Boss rounds
 challenge-boss-juggernaut-hunter = Kill {$idiot} to death!
 challenge-boss-juggernaut-juggernaut = Objective: Survive.
+
+# New Challenges
+challenge-hot-potato = Hot Potato! Pass it to someone by hitting them!
+challenge-wirecutter-defusal = Defuse your bomb using wirecutters!
+challenge-toy-saber-duel = Toy Saber Duel! Knock out others with your toy saber!
+challenge-portal-roulette = Portal Roulette! Enter a safe portal!
+challenge-sedative-dart-gun = Sedative Dart Gun! Put others to sleep and stay awake!
+challenge-carp-escape = Carp Escape! Survive the space carps!
+
+# Custom modifiers text
+sw-defusal-color-red = red
+sw-defusal-color-blue = blue
+sw-defusal-color-green = green
+sw-defusal-popup-instruction = CUT THE {$color} WIRE!
+sw-defusal-verb-cut = Cut {$color} wire
+sw-defusal-no-wirecutter = You need wirecutters!
+sw-defusal-bomb-defused = BOMB DEFUSED!
+sw-defusal-bomb-failed = WRONG WIRE! BOOM!
+sw-toy-saber-knocked-out = KNOCKED OUT!
+sw-portal-safe = SAFE!
+sw-portal-failed = BOOM!
+sw-sedative-asleep = ASLEEP!
+

@@ -32,7 +32,7 @@ public sealed partial class SpawnPointSystem : EntitySystem
 
         while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
         {
-            if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
+            if (args.Station != null && args.Station.Value.IsValid() && _stationSystem.GetOwningStation(uid, xform) != args.Station)
                 continue;
 
             if (_gameTicker.Preset?.ID == "StationWare" || _gameTicker.CurrentPreset?.ID == "StationWare")
@@ -77,10 +77,8 @@ public sealed partial class SpawnPointSystem : EntitySystem
                 {
                     foreach (var grid in stationData.Grids)
                     {
-                        if (TryComp<TransformComponent>(grid, out var gridXform))
-                        {
-                            possiblePositions.Add(gridXform.Coordinates);
-                        }
+                        var gridXform = Transform(grid);
+                        possiblePositions.Add(gridXform.Coordinates);
                     }
                 }
             }

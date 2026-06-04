@@ -31,8 +31,8 @@ internal sealed class ChallengeOverlay : Overlay
 
         ZIndex = 200;
         _shader = proto.Index(UnshadedShaderId).Instance();
-        _smallFont = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/warioware-inc/warioware-inc.ttf"), 6);
-        _font = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/warioware-inc/warioware-inc.ttf"), 10);
+        _smallFont = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Regular.ttf"), 10);
+        _font = new VectorFont(resourceCache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Bold.ttf"), 14);
     }
 
     public override OverlaySpace Space => OverlaySpace.ScreenSpace;
