@@ -537,5 +537,16 @@ namespace Content.Server.GameTicking
         }
 
         #endregion
+
+        public void SpawnLobbyPlayer(ICommonSession player)
+        {
+            var character = GetPlayerProfile(player);
+            var station = EntityUid.Invalid;
+            var stations = GetSpawnableStations();
+            if (stations.Count > 0)
+                station = stations[0];
+
+            SpawnPlayer(player, character, station, "Challenger", false, true);
+        }
     }
 }

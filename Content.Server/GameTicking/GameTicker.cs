@@ -70,6 +70,7 @@ namespace Content.Server.GameTicking
         [ViewVariables] private bool _postInitialized;
 
         [ViewVariables] public MapId DefaultMap { get; private set; }
+        private MapId? _lobbyMapId;
 
         private ISawmill _sawmill = default!;
 

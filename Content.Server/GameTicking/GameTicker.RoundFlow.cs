@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Robust.Shared.Prototypes;
 using Content.Server.Announcements;
 using Content.Server.Discord;
 using Content.Server.GameTicking.Events;
@@ -375,7 +376,7 @@ namespace Content.Server.GameTicking
             var autoDeAdmin = _cfg.GetCVar(CCVars.AdminDeadminOnJoin);
             foreach (var (userId, status) in _playerGameStatuses)
             {
-                if (LobbyEnabled && status != PlayerGameStatus.ReadyToPlay) continue;
+                if (LobbyEnabled && status != PlayerGameStatus.ReadyToPlay && status != PlayerGameStatus.JoinedGame) continue;
                 if (!_playerManager.TryGetSessionById(userId, out var session)) continue;
 
                 if (autoDeAdmin && _adminManager.IsAdmin(session))
@@ -402,6 +403,17 @@ namespace Content.Server.GameTicking
             }
 
             DebugTools.AssertEqual(readyPlayers.Count, ReadyPlayerCount());
+
+            if (LobbyEnabled && _lobbyMapId != null)
+            {
+                foreach (var player in readyPlayers)
+                {
+                    _mind.WipeMind(player);
+                }
+
+                _map.DeleteMap(_lobbyMapId.Value);
+                _lobbyMapId = null;
+            }
 
             // Just in case it hasn't been loaded previously we'll try loading it.
             LoadMaps();
@@ -676,6 +688,25 @@ namespace Content.Server.GameTicking
                     _roundStartCountdownHasNotStartedYetDueToNoPlayers = true;
                 else
                     _roundStartTime = _gameTiming.CurTime + LobbyDuration;
+
+                if (LobbyEnabled)
+                {
+                    if (_prototypeManager.TryIndex<GameMapPrototype>(new ProtoId<GameMapPrototype>("Dev"), out var devMapProto))
+                    {
+                        LoadGameMap(devMapProto, out var lobbyMapId);
+                        _map.InitializeMap(lobbyMapId);
+                        _lobbyMapId = lobbyMapId;
+
+                        foreach (var player in _playerManager.Sessions)
+                        {
+                            if (_userDb.IsLoadComplete(player))
+                            {
+                                SpawnLobbyPlayer(player);
+                                RaiseNetworkEvent(new TickerJoinGameEvent(), player.Channel);
+                            }
+                        }
+                    }
+                }
 
                 SendStatusToAll();
                 UpdateInfoText();

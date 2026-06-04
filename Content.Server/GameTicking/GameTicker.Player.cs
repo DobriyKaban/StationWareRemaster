@@ -88,7 +88,7 @@ namespace Content.Server.GameTicking
                     if (mind == null)
                     {
                         if (LobbyEnabled)
-                            PlayerJoinLobby(session);
+                            SpawnLobbyWaitDb();
                         else
                             SpawnWaitDb();
 
@@ -157,6 +157,22 @@ namespace Content.Server.GameTicking
                 SpawnPlayer(session, EntityUid.Invalid);
             }
 
+            async void SpawnLobbyWaitDb()
+            {
+                try
+                {
+                    await _userDb.WaitLoadComplete(session);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Bail, user must've disconnected or something.
+                    Log.Debug($"Database load cancelled while waiting to spawn {session}");
+                    return;
+                }
+
+                PlayerJoinLobby(session);
+            }
+
             async void SpawnObserverWaitDb()
             {
                 try
@@ -209,13 +225,21 @@ namespace Content.Server.GameTicking
 
         private void PlayerJoinLobby(ICommonSession session)
         {
-            _playerGameStatuses[session.UserId] = LobbyEnabled ? PlayerGameStatus.NotReadyToPlay : PlayerGameStatus.ReadyToPlay;
+            _playerGameStatuses[session.UserId] = PlayerGameStatus.ReadyToPlay;
             _db.AddRoundPlayers(RoundId, session.UserId);
 
             var client = session.Channel;
-            RaiseNetworkEvent(new TickerJoinLobbyEvent(), client);
-            RaiseNetworkEvent(GetStatusMsg(session), client);
-            RaiseNetworkEvent(GetInfoMsg(), client);
+            if (LobbyEnabled && _lobbyMapId != null)
+            {
+                SpawnLobbyPlayer(session);
+                PlayerJoinGame(session, silent: true);
+            }
+            else
+            {
+                RaiseNetworkEvent(new TickerJoinLobbyEvent(), client);
+                RaiseNetworkEvent(GetStatusMsg(session), client);
+                RaiseNetworkEvent(GetInfoMsg(), client);
+            }
             RaiseLocalEvent(new PlayerJoinedLobbyEvent(session));
         }
 

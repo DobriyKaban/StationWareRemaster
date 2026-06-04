@@ -33,3 +33,7 @@ lobby-state-playtime-comment-normal =
 lobby-state-playtime-comment-concerning = You've played for {$hours} hours today. Please take a break.
 lobby-state-playtime-comment-grasstouchless = {$hours} hours. Consider logging off to attend to your needs.
 lobby-state-playtime-comment-selfdestructive = {$hours} hours. Really?
+
+lobby-hud-game-mode = Game Mode: {$mode}
+lobby-hud-map = Map: {$map}
+lobby-hud-players = Players: {$ready} / {$total}

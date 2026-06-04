@@ -34,6 +34,10 @@ namespace Content.Client.GameTicking.Managers
         [ViewVariables] public string? ServerInfoBlob { get; private set; }
         [ViewVariables] public TimeSpan StartTime { get; private set; }
         [ViewVariables] public new bool Paused { get; private set; }
+        [ViewVariables] public string PresetTitle { get; private set; } = string.Empty;
+        [ViewVariables] public string SelectedMapTitle { get; private set; } = string.Empty;
+        [ViewVariables] public int PlayerCount { get; private set; }
+        [ViewVariables] public int ReadyCount { get; private set; }
 
         public override IReadOnlyList<(TimeSpan, string)> AllPreviousGameRules => new List<(TimeSpan, string)>();
 
@@ -127,6 +131,10 @@ namespace Content.Client.GameTicking.Managers
             AreWeReady = message.YouAreReady;
             LobbyBackground = message.LobbyBackground;
             Paused = message.Paused;
+            PresetTitle = message.PresetTitle;
+            SelectedMapTitle = message.SelectedMapTitle;
+            PlayerCount = message.PlayerCount;
+            ReadyCount = message.ReadyCount;
 
             LobbyStatusUpdated?.Invoke();
         }

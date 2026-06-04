@@ -94,7 +94,23 @@ namespace Content.Server.GameTicking
         private TickerLobbyStatusEvent GetStatusMsg(ICommonSession session)
         {
             _playerGameStatuses.TryGetValue(session.UserId, out var status);
-            return new TickerLobbyStatusEvent(RunLevel != GameRunLevel.PreRoundLobby, LobbyBackground, status == PlayerGameStatus.ReadyToPlay, _roundStartTime, RoundPreloadTime, RoundStartTimeSpan, Paused);
+            var preset = CurrentPreset ?? Preset;
+            var gmTitle = preset != null ? ((Decoy == null) ? Loc.GetString(preset.ModeTitle) : Loc.GetString(Decoy.ModeTitle)) : string.Empty;
+            var mapName = _gameMapManager.GetSelectedMap()?.MapName ?? Loc.GetString("game-ticker-no-map-selected");
+            var playerCount = _playerManager.PlayerCount;
+            var readyCount = _playerGameStatuses.Values.Count(x => x == PlayerGameStatus.ReadyToPlay || x == PlayerGameStatus.JoinedGame);
+            return new TickerLobbyStatusEvent(
+                RunLevel != GameRunLevel.PreRoundLobby,
+                LobbyBackground,
+                status == PlayerGameStatus.ReadyToPlay || status == PlayerGameStatus.JoinedGame,
+                _roundStartTime,
+                RoundPreloadTime,
+                RoundStartTimeSpan,
+                Paused,
+                gmTitle,
+                mapName,
+                playerCount,
+                readyCount);
         }
 
         private void SendStatusToAll()

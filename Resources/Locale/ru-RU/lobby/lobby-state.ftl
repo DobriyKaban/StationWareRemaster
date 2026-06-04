@@ -36,3 +36,7 @@ lobby-state-playtime-comment-normal =
 lobby-state-playtime-comment-concerning = Сегодня вы наиграли { $hours } часов. Пожалуйста, отдохните.
 lobby-state-playtime-comment-grasstouchless = { $hours } часов. Подумайте о выходе из игры, чтобы заняться своими делами.
 lobby-state-playtime-comment-selfdestructive = { $hours } часов. Серьёзно?
+
+lobby-hud-game-mode = Режим игры: { $mode }
+lobby-hud-map = Карта: { $map }
+lobby-hud-players = Игроки: { $ready } / { $total }

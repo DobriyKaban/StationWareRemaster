@@ -102,8 +102,12 @@ namespace Content.Shared.GameTicking
         public TimeSpan StartTime { get; }
         public TimeSpan RoundStartTimeSpan { get; }
         public bool Paused { get; }
+        public string PresetTitle { get; }
+        public string SelectedMapTitle { get; }
+        public int PlayerCount { get; }
+        public int ReadyCount { get; }
 
-        public TickerLobbyStatusEvent(bool isRoundStarted, ProtoId<LobbyBackgroundPrototype>? lobbyBackground, bool youAreReady, TimeSpan startTime, TimeSpan preloadTime, TimeSpan roundStartTimeSpan, bool paused)
+        public TickerLobbyStatusEvent(bool isRoundStarted, ProtoId<LobbyBackgroundPrototype>? lobbyBackground, bool youAreReady, TimeSpan startTime, TimeSpan preloadTime, TimeSpan roundStartTimeSpan, bool paused, string presetTitle, string selectedMapTitle, int playerCount, int readyCount)
         {
             IsRoundStarted = isRoundStarted;
             LobbyBackground = lobbyBackground;
@@ -111,6 +115,10 @@ namespace Content.Shared.GameTicking
             StartTime = startTime;
             RoundStartTimeSpan = roundStartTimeSpan;
             Paused = paused;
+            PresetTitle = presetTitle;
+            SelectedMapTitle = selectedMapTitle;
+            PlayerCount = playerCount;
+            ReadyCount = readyCount;
         }
     }
 

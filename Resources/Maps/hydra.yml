@@ -1024,9 +1024,6 @@ entities:
   - type: GasTileOverlay
   - id: Stationware
     type: BecomesStation
-  - forceEnabled: True
-    enabled: True
-    type: Gravity
 - uid: 1
   components:
   - type: MetaData
