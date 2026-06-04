@@ -137,6 +137,11 @@ namespace Content.Server.GameTicking
             bool lateJoin = true,
             bool silent = false)
         {
+            if (Preset?.ID == "StationWare" || CurrentPreset?.ID == "StationWare")
+            {
+                jobId = "Challenger";
+            }
+
             var character = GetPlayerProfile(player);
 
             var jobBans = _banManager.GetJobBans(player.UserId);
@@ -162,6 +167,11 @@ namespace Content.Server.GameTicking
             bool lateJoin = true,
             bool silent = false)
         {
+            if (Preset?.ID == "StationWare" || CurrentPreset?.ID == "StationWare")
+            {
+                jobId = "Challenger";
+            }
+
             // Can't spawn players with a dummy ticker!
             if (DummyTicker)
                 return;
@@ -237,11 +247,18 @@ namespace Content.Server.GameTicking
             if (jobBans != null)
                 restrictedRoles.UnionWith(jobBans);
 
-            // Pick best job best on prefs.
-            jobId ??= _stationJobs.PickBestAvailableJobWithPriority(station,
-                character.JobPriorities,
-                true,
-                restrictedRoles);
+            if (Preset?.ID == "StationWare" || CurrentPreset?.ID == "StationWare")
+            {
+                jobId = "Challenger";
+            }
+            else
+            {
+                // Pick best job best on prefs.
+                jobId ??= _stationJobs.PickBestAvailableJobWithPriority(station,
+                    character.JobPriorities,
+                    true,
+                    restrictedRoles);
+            }
             // If no job available, stay in lobby, or if no lobby spawn as observer
             if (jobId is null)
             {

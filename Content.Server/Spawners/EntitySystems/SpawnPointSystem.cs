@@ -1,8 +1,11 @@
-﻿using Content.Server.GameTicking;
+using Content.Server.GameTicking;
 using Content.Server.Spawners.Components;
 using Content.Server.Station.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Content.Server._StationWare.Challenges.Modifiers.Components;
+using Content.Shared.Station.Components;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server.Spawners.EntitySystems;
 
@@ -32,6 +35,15 @@ public sealed partial class SpawnPointSystem : EntitySystem
             if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
                 continue;
 
+            if (_gameTicker.Preset?.ID == "StationWare" || _gameTicker.CurrentPreset?.ID == "StationWare")
+            {
+                if (spawnPoint.SpawnType == SpawnPointType.Job || spawnPoint.SpawnType == SpawnPointType.LateJoin)
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                    continue;
+                }
+            }
+
             if (_gameTicker.RunLevel == GameRunLevel.InRound && spawnPoint.SpawnType == SpawnPointType.LateJoin)
             {
                 possiblePositions.Add(xform.Coordinates);
@@ -42,6 +54,45 @@ public sealed partial class SpawnPointSystem : EntitySystem
                 (args.Job == null || spawnPoint.Job == null || spawnPoint.Job == args.Job))
             {
                 possiblePositions.Add(xform.Coordinates);
+            }
+        }
+
+        // StationWare fallbacks if no standard spawn points were found
+        if (possiblePositions.Count == 0 && (_gameTicker.Preset?.ID == "StationWare" || _gameTicker.CurrentPreset?.ID == "StationWare"))
+        {
+            // 1. Try MapPlayerSpawnerComponent (markers) on the station
+            var markers = EntityQueryEnumerator<MapPlayerSpawnerComponent, TransformComponent>();
+            while (markers.MoveNext(out var uid, out _, out var xform))
+            {
+                if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
+                    continue;
+
+                possiblePositions.Add(xform.Coordinates);
+            }
+
+            // 2. Try grids associated with the station
+            if (possiblePositions.Count == 0 && args.Station != null)
+            {
+                if (TryComp<StationDataComponent>(args.Station, out var stationData))
+                {
+                    foreach (var grid in stationData.Grids)
+                    {
+                        if (TryComp<TransformComponent>(grid, out var gridXform))
+                        {
+                            possiblePositions.Add(gridXform.Coordinates);
+                        }
+                    }
+                }
+            }
+
+            // 3. Try any map grid
+            if (possiblePositions.Count == 0)
+            {
+                var gridQuery = EntityQueryEnumerator<MapGridComponent, TransformComponent>();
+                while (gridQuery.MoveNext(out _, out _, out var xform))
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                }
             }
         }
 

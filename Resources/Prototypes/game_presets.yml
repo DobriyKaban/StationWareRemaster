@@ -5,6 +5,7 @@
   name: stationware-title
   showInVote: true
   description: stationware-description
+  supportedMaps: StationWareMapPool
   rules:
   - StationWare
 

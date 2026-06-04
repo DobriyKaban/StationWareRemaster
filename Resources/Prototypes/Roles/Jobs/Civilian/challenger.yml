@@ -1,0 +1,19 @@
+- type: job
+  id: Challenger
+  name: job-name-challenger
+  description: job-description-challenger
+  playTimeTracker: JobChallenger
+  startingGear: ChallengerGear
+  icon: "JobIconPassenger"
+  supervisors: job-supervisors-everyone
+  access:
+  - Maintenance
+
+- type: startingGear
+  id: ChallengerGear
+  equipment:
+    id: PassengerPDA
+    ears: ClothingHeadsetGrey
+    eyes: ClothingEyesGlassesSunglasses
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    shoes: ClothingShoesColorBlack

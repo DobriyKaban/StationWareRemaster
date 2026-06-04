@@ -336,6 +336,9 @@ public sealed partial class ArrivalsSystem : EntitySystem
         if (ev.SpawnResult != null)
             return;
 
+        if (_ticker.Preset?.ID == "StationWare" || _ticker.CurrentPreset?.ID == "StationWare")
+            return;
+
         // We use arrivals as the default spawn so don't check for job prio.
 
         // Only works on latejoin even if enabled.

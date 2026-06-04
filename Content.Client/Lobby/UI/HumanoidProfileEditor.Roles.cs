@@ -139,6 +139,13 @@ public sealed partial class HumanoidProfileEditor
 
         foreach (var department in departments)
         {
+            var jobs = department.Roles.Select(jobId => _prototypeManager.Index(jobId))
+                .Where(job => job.SetPreference && job.ID == "Challenger")
+                .ToArray();
+
+            if (jobs.Length == 0)
+                continue;
+
             var departmentName = Loc.GetString(department.Name);
 
             if (!_jobCategories.TryGetValue(department.ID, out var category))
@@ -180,10 +187,6 @@ public sealed partial class HumanoidProfileEditor
                 _jobCategories[department.ID] = category;
                 JobList.AddChild(category);
             }
-
-            var jobs = department.Roles.Select(jobId => _prototypeManager.Index(jobId))
-                .Where(job => job.SetPreference)
-                .ToArray();
 
             Array.Sort(jobs, JobUIComparer.Instance);
 

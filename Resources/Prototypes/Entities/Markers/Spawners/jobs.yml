@@ -101,6 +101,11 @@
       - state: passenger
 
 - type: entity
+  id: SpawnPointAssistant
+  parent: SpawnPointPassenger
+  name: assistant (legacy)
+
+- type: entity
   id: SpawnPointTechnicalAssistant
   parent: SpawnPointJobBase
   name: technical assistant

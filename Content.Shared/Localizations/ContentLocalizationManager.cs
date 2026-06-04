@@ -8,9 +8,10 @@ namespace Content.Shared.Localizations
     public sealed partial class ContentLocalizationManager
     {
         [Dependency] private ILocalizationManager _loc = default!;
+        [Dependency] private Robust.Shared.Configuration.IConfigurationManager _config = default!;
 
         // If you want to change your codebase's language, do it here.
-        private const string Culture = "en-US";
+        private const string Culture = "ru-RU";
 
         /// <summary>
         /// Custom format strings used for parsing and displaying minutes:seconds timespans.
@@ -25,9 +26,26 @@ namespace Content.Shared.Localizations
 
         public void Initialize()
         {
-            var culture = new CultureInfo(Culture);
+            // Load English first so it can be fallback
+            var cultureEn = new CultureInfo("en-US");
+            if (!_loc.HasCulture(cultureEn))
+                _loc.LoadCulture(cultureEn);
 
-            _loc.LoadCulture(culture);
+            _loc.AddFunction(cultureEn, "MAKEPLURAL", FormatMakePlural);
+            _loc.AddFunction(cultureEn, "MANY", FormatMany);
+
+            var cultureName = Culture;
+            if (_config.IsCVarRegistered(Robust.Shared.CVars.LocCultureName.Name))
+            {
+                var val = _config.GetCVar(Robust.Shared.CVars.LocCultureName);
+                if (!string.IsNullOrEmpty(val))
+                    cultureName = val;
+            }
+
+            var culture = new CultureInfo(cultureName);
+            if (!_loc.HasCulture(culture))
+                _loc.LoadCulture(culture);
+
             _loc.AddFunction(culture, "PRESSURE", FormatPressure);
             _loc.AddFunction(culture, "POWERWATTS", FormatPowerWatts);
             _loc.AddFunction(culture, "POWERJOULES", FormatPowerJoules);
@@ -40,16 +58,12 @@ namespace Content.Shared.Localizations
             _loc.AddFunction(culture, "NATURALPERCENT", FormatNaturalPercent);
             _loc.AddFunction(culture, "PLAYTIME", FormatPlaytime);
 
+            _loc.SetCulture(culture);
 
-            /*
-             * The following language functions are specific to the english localization. When working on your own
-             * localization you should NOT modify these, instead add new functions specific to your language/culture.
-             * This ensures the english translations continue to work as expected when fallbacks are needed.
-             */
-            var cultureEn = new CultureInfo("en-US");
-
-            _loc.AddFunction(cultureEn, "MAKEPLURAL", FormatMakePlural);
-            _loc.AddFunction(cultureEn, "MANY", FormatMany);
+            if (culture.Name != "en-US")
+            {
+                _loc.SetFallbackCluture(cultureEn);
+            }
         }
 
         private ILocValue FormatMany(LocArgs args)
