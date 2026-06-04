@@ -38,8 +38,15 @@ namespace Content.Shared.Localizations
             if (_config.IsCVarRegistered(Robust.Shared.CVars.LocCultureName.Name))
             {
                 var val = _config.GetCVar(Robust.Shared.CVars.LocCultureName);
-                if (!string.IsNullOrEmpty(val))
+                if (val == "en-US")
+                {
+                    _config.SetCVar(Robust.Shared.CVars.LocCultureName, Culture);
+                    cultureName = Culture;
+                }
+                else if (!string.IsNullOrEmpty(val))
+                {
                     cultureName = val;
+                }
             }
 
             var culture = new CultureInfo(cultureName);
